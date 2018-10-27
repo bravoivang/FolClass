@@ -9,47 +9,47 @@
   };
 firebase.initializeApp(config);
 
-const REF = firebase.database().ref('/');
+//¿quien genera el path? => el que lo llama
+//¿quien parsea el obj? => nadie, se guarda entero. El que lo pide despues lo filtra ;)
 
-var dataJSON = {};
+const fbdb = firebase.database();
+const ROOTref = firebase.database().ref();
 
+var preload;
 
-loadData = function () {
+perfilUpdate = function () { //mudar a gestor
+    var dataJSON = {};
     dataJSON = {
-        id: externalCount,
-        name: $$('#name')[0].value,
-        email: $$('#email')[0].value,
-        password: $$('#password')[0].value,
-        date: $$('#date')[0].value,
-        toggle: $$('#toggle')[0].checked,
-        slider: $$('#slider')[0].value,
-        checkbox: $$('#checkbox')[0].checked,
+        //uid: currentUser.uid,
+        nick: $$('#nick').val(),
+        //email: $$('#email')[0].value, //plus: cambiar email
+        //password: $$('#password')[0].value, //plus : cambiar password
+        date: $$('#date').val(),
+        toggle: $$('#toggle').val(),
+        slider: $$('#slider').val(),
+        checkbox: $$('#checkbox').val(),
     };
-    var path = REF_usuarios+"/"+externalCount;
-    externalCount++;
-    saveData(path);
+    var pathUid = "usuarios/"+currentUser.uid;
+    update(pathUid,dataJSON);
 }
-/*
-// Get a reference to the /users/ada node
-var adaRef = firebase.database().ref("users/ada");
-// The above is shorthand for the following operations:
-//var rootRef = firebase.database().ref();
-//var adaRef = rootRef.child("users/ada");
-*/
 
-saveData = function (path){
-   // path+=externalCount;
-   // firebase.database().ref("docentes/" + uid).set({name: "yo"});
-//firebase.database().ref('usuarios/'+externalCount).set(dataJSON);
-    firebase.database().ref(path).set(dataJSON);
-    console.log("se cargó en: "+path+" el dataJSON");
+function storage (path, obj) {
+    fbdb.ref(path).set(obj);
 }
-var a; 
-var ref;
-firebase.database().ref('usuarios/').on("child_added", function (snap) {
-    a = snap.val();
-    console.log("watchChanges activated");
-    console.log(a);
-    
-});
+
+function update (pathUid, valuesChanged) {
+    fbdb.ref(pathUid).update(valuesChanged);
+}
+
+function remove (path){
+    fbdb.ref(path).remove(function (){
+        console.log("hijo removido de: "+path);
+    });
+}
+
+function firstCharge (){
+    fbdb.ref('usuarios/'+currentUser.user.uid).once('child_added', function (snap) {
+        preload = snap.val();
+    });
+}
 
