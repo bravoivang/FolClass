@@ -7,6 +7,8 @@ var persistence = firebase.auth.Auth.Persistence.LOCAL;//puede que tenga error d
 auth.setPersistence(persistence);
 
 var currentUser;
+var currentCourse;
+var mycourses = currentUser.mycourses; //id de cursos
 
 auth.onAuthStateChanged(function(user) {
     if (user) {
@@ -61,3 +63,8 @@ function deleteAcount (user){
 }
 */
 
+function getDataFor (view){
+    fbdb.ref('cursos/'+currentUser.user.uid).once('child_added', function (snap) {
+        preload = snap.val();
+    });
+}

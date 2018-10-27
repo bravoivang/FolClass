@@ -64,7 +64,7 @@ panelLeft.on('open', nonan)
   var entorno = true;
   var contenidoAlumnos = {
     
-    alumnos: ["1111","2222","3333","4444","5555","6666","7777","1111","2222","3333","4444","5555","6666","7777","6666","7777"],
+    alumnos: ["1111","2222","3333","4444","5555","6666","7777","1111","2222","3333","4444","5555","6666","6666","7777"],
     cantidadTotal: "7",
     asissAlumn1: "5",//ej para alumno 1
   
@@ -120,43 +120,33 @@ app.on('click', function () {
 //ejemplo DOM 7 event para evento init de target page
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
-  console.log(e.name);
-  console.log("recarga");
-
-  dibujadorAlumnos (contenidoAlumnos);
+  var content = getDataFor (alumnos);
+  cardDrawing (content,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
-  console.log(e.name);
-  console.log("recarga");
-
-  dibujadorCursos (contenidoCursos);
+  
+  cardDrawing (contenidoCursos,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
-  console.log(e.name);
-  console.log("recarga");
-
-  dibujadorDashboard (contenidoDashboard);
-  addEditCard ();
+  
+  cardDrawing (contenidoDashboard,"card-basic");
 });
 
-//dibujador de cards Alumnos
-function dibujadorAlumnos (contenido) {
-
-  var rows = Math.ceil(contenido.alumnos.length / 4);
-  var arrayAlumnos = contenido.alumnos;
-  var dashboard = $$('[data-name="alumnos"] .dashboard'); console.log(dashboard);
-  //var loopAux = 4;
-  //var restAux = contenido.alumnos.length % 4;
+function cardDrawing (content,cssCard) {
+  var divNum = 4;
+  var rows = Math.ceil(content.alumnos.length / divNum);
+  var arrayAlumnos = content.alumnos;
+  var dashboard = $$('.cardZone'); 
   var aux = 0;
-  console.log("Completo",arrayAlumnos)
+  
   for (var i = 0; rows>i; i++)
   {  
     var currentRow = $$('<div>'); 
     currentRow.addClass("row");
 
-    for (var j = 0; 4>j; j++,aux++)
+    for (var j = 0; divNum>j; j++,aux++)
     {
       //creo columna
       var currentCol = $$('<div>');  
@@ -165,18 +155,14 @@ function dibujadorAlumnos (contenido) {
       if(arrayAlumnos.length-aux < 1)
       {
         var currentCard = $$('<div>');
-        currentCard.addClass("card-content.card-content-padding");
-        currentCard.append("none");
-        //card vacia. solo espacio de columna para compretar el 100% con 4 espacios
-        // card Style empy para alumno
+        currentCard.addClass("card-null card-content card-content-padding"+" "+cssCard);
+        currentCard.append("");
       }
       else 
       {
         var currentCard = $$('<div>');
-        currentCard.addClass("card-content.card-content-padding");
-        console.log("El",arrayAlumnos[aux])
+        currentCard.addClass("card-content card-content-padding"+" "+cssCard);
         currentCard.append(arrayAlumnos[aux]);
-        console.log(i,j);
       }
       //inserto card a columna      
       currentCol.append(currentCard);
@@ -186,142 +172,18 @@ function dibujadorAlumnos (contenido) {
     //inserto row a dashboard
     dashboard.append(currentRow);
   }
-
 }
 
-//dibujador de cards Cursos
-function dibujadorCursos (contenido) {
 
-  var rows = Math.ceil(contenido.cursos.length / 4);
-  var arrayCursos = contenido.cursos.reverse();
-  var dashboard = $$('[data-name="cursos"] .dashboard'); console.log(dashboard);
-  //var loopAux = 4;
-  //var restAux = contenido.alumnos.length % 4;
-
-  
-  for (var i = 0; rows>i; i++)
-  {  
-    var currentRow = $$('<div>'); 
-    currentRow.addClass("row");
-
-    for (var j = 0; 2>j; j++)
-    {
-      //creo columna
-      var currentCol = $$('<div>');  
-      currentCol.addClass("col-50.tablet-50.desktop-50"); 
-      //creo card
-      if(arrayCursos.length < 1)
-      {
-        //card vacia. solo espacio de columna para compretar el 100% con 4 espacios
-        // card Style empy para curso
-      }
-      else 
-      {
-        var currentCard = $$('<div>');
-        currentCard.addClass("card-content.card-content-padding");
-        currentCard.append(arrayCursos.pop());
-      }
-      //inserto card a columna      
-      currentCol.append(currentCard);
-      //inserto columna a row
-      currentRow.append(currentCol);
-    }
-    //inserto row a dashboard
-    dashboard.append(currentRow);
-  }
-
-}
-
-//dibujador de cards Dashboard
-function dibujadorDashboard (contenido) {
-
-  dibujadorMiniCards(contenido);
-  dibujadorMaxiCards(contenido);
-
-  //dibujador de mini cards Dashboard
-  function dibujadorMiniCards (contenido){
-
-    var rows = 1;
-    var displayCont = [contenido.totalAlumnos,contenido.totalPagos,contenido.statusMilestone].reverse();
-    var dashboard = $$('[data-name="home"] .dashboard'); console.log(dashboard);
-    //var loopAux = 4;
-    //var restAux = contenido.alumnos.length % 4;
-    
-    for (var i = 0; rows>i; i++)
-    {  
-      var currentRow = $$('<div>'); 
-      currentRow.addClass("row");
-
-      for (var j = 0; 4>j; j++)
-      {
-        //creo columna
-        var currentCol = $$('<div>');  
-        currentCol.addClass("col-30.tablet-30.desktop-30"); 
-        //creo card
-        if(displayCont.length < 1)
-        {
-          //card vacia. solo espacio de columna para compretar el 100% con 4 espacios
-          // card Style empy para curso
-        }
-        else 
-        {
-          var currentCard = $$('<div>');
-          currentCard.addClass("card-content.card-content-padding");
-          currentCard.append(displayCont.pop());
-        }
-        //inserto card a columna      
-        currentCol.append(currentCard);
-        //inserto columna a row
-        currentRow.append(currentCol);
-      }
-      //inserto row a dashboard
-      dashboard.append(currentRow);
-    }
-
-  }
-
-  function dibujadorMaxiCards (contenido){
-
-    var rows = 1;
-    var displayCont = [contenido.feed.toString(),contenido.asistencias].reverse();
-    var dashboard = $$('[data-name="home"] .dashboard'); console.log(dashboard);
-    //var loopAux = 4;
-    //var restAux = contenido.alumnos.length % 4;
-    
-    for (var i = 0; rows>i; i++)
-    {  
-      var currentRow = $$('<div>'); 
-      currentRow.addClass("row");
-
-      for (var j = 0; 2>j; j++)
-      {
-        //creo columna
-        var currentCol = $$('<div>');  
-        currentCol.addClass("col-50.tablet-50.desktop-50"); 
-        //creo card
-        if(displayCont.length < 1)
-        {
-          //card vacia. solo espacio de columna para compretar el 100% con 4 espacios
-          // card Style empy para curso
-        }
-        else 
-        {
-          var currentCard = $$('<div>');
-          currentCard.addClass("card-content.card-content-padding");
-          currentCard.append(displayCont.pop());
-        }
-        //inserto card a columna      
-        currentCol.append(currentCard);
-        //inserto columna a row
-        currentRow.append(currentCol);
-      }
-      //inserto row a dashboard
-      dashboard.append(currentRow);
-    }
-
-  }
-}
-  
-function addEditCard (){
-
+function addEditCard (view){ //rediseñar
+  var currentRow = $$('<div>'); 
+  currentRow.addClass("row");
+  var currentCol = $$('<div>');  
+  currentCol.addClass("col-30.tablet-30.desktop-30"); 
+  var currentCard = $$('<div>');
+  currentCard.addClass("card-content card-content-padding"+" "+"card-add");
+  currentCard.append(view);
+  currentCol.append(currentCard);
+  currentRow.append(currentCol);
+  dashboard.append(currentRow);
 }

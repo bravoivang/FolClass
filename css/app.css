@@ -13,3 +13,11 @@
   background-color: aqua;
 }
 
+.card-addnew{
+  background-color: red;
+}
+
+.card-null{
+  display: none;
+}
+
