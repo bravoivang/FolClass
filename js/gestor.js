@@ -2,7 +2,8 @@
 //estado de user
 //es quien utiliza DOM7 para selecionar segun pantalla objetos HTML
 
-//access-screen//
+//access-screen/
+
 $$(document).on('page:init', '.page[data-name="access"]', function () {
     console.log("cargué pagina acces");
     var accObj= {};
@@ -27,6 +28,13 @@ $$(document).on('page:init', '.page[data-name="access"]', function () {
     });
 });
 
+function accRest(accObj) {
+    accObj.el_accGo.hide();
+    accObj.el_accCommands.show();
+    accObj.el_accInputs.hide();
+    accObj.el_accTitle.text("Bienvenido");
+}
+
 function accGoLog (accObj){
     accObj.el_accInputs.show();
     accObj.el_accReg.hide();
@@ -36,6 +44,11 @@ function accGoLog (accObj){
     accObj.el_accButtonGo.text("Go Log!");
     accObj.el_accButtonBack.on('click', () =>{
         accRest(accObj);
+    });
+    accObj.el_accButtonGo.on('click',() =>{
+        var data = accTakeData();
+        login (data);
+        console.log("User: "+data.email+"Password: "+data.password);
     });
 
 }
@@ -49,11 +62,18 @@ function accGoReg (accObj){
     accObj.el_accButtonBack.on('click', () =>{
         accRest(accObj);
     });
+    accObj.el_accButtonGo.on('click',() =>{
+        var data = accTakeData();
+        register (data);
+        console.log("User: "+data.email+ "Password: "+data.password + "Repass: "+ data.repassword +" Nick: "+data.nick);
+    });
 }
 
-function accRest(accObj) {
-    accObj.el_accGo.hide();
-    accObj.el_accCommands.show();
-    accObj.el_accInputs.hide();
-    accObj.el_accTitle.text("Bienvenido");
+function accTakeData (){
+    var accData = {};
+    accData.email = $$('#acc-email').val(); 
+    accData.password = $$('#acc-password').val();
+    accData.nick = $$('#acc-nick').val();
+    accData.repassword = $$('#acc-repassword').val();
+    return accData;
 }

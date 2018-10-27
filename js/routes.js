@@ -5,9 +5,9 @@ routes = [
     },
     
     {
-      name: 'login',
-      path: '/login-screen/',
-      url: './pages/login-screen.html',
+      name: 'access',
+      path: '/access-screen/',
+      url: './pages/access-screen.html',
     },
     {
       path: '/about/',

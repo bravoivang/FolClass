@@ -55,12 +55,45 @@ panelLeft.on('open', nonan)
 ////
 */
 
+
+//contenido viene de BD
+{
+  var entorno = true;
+  var contenidoAlumnos = {
+    
+    alumnos: ["alumno1","alumno2","alumno3","alumno4","alumno5","alumno6","alumno7"],
+    cantidadTotal: "6",
+    asissAlumn1: "5",//ej para alumno 1
+  
+  }
+  var contenidoCursos = {
+    
+    cursos: ["curso1","curso2","curso3","curso4","curso5"],
+    cantidadTotal: "5",
+  }
+  
+  var contenidoDashboard = {
+    
+    totalAlumnos: contenidoAlumnos.cantidadTotal,
+    totalPagos: "$15000",
+    statusMilestone: "3/5",
+  
+    feed: {
+      js: false,
+      html: true,
+      css: true,
+    },
+    asistencias: contenidoAlumnos.asissAlumn1,
+  
+  }
+  }
+
 panelLeft.on('open', function (panel) {
-  alert ("panel open con eventos para objetos instanciados");
-  console.log("on devuelve para el callback 'panel' que es el objeto instanciado, por lo que se lo puede manipular");
+  console.log("panel open con eventos para objetos instanciados");
+ /* console.log("on devuelve para el callback 'panel' que es el objeto instanciado, por lo que se lo puede manipular");
   setTimeout(function () {
     panel.close(true);
-  },3000);
+  },3000);*/
 });
 panelLeft.on('close', function () {
   console.log("panel cerrado <==");
@@ -68,40 +101,20 @@ panelLeft.on('close', function () {
 
 
 //var entorno = true;
-if (!entorno){
+/*if (!entorno){
   mainView.router.navigate('/login-screen/');
-  console.log("no estas logeado");
-    
-  
-  
-} 
-/*
+  console.log("no estas logeado");  
+} */
+/*//ejemplo app event con router
 app.on('click', function () {
-  mainView.router.navigate("/login-screen/"); //router.navigate se usa para navegar entre pages
+  mainView.router.navigate("/about/"); //router.navigate se usa para navegar entre pages
                                               //en parametros se le puede mandar un objeto con las especificaciones
                                               //{path:'/login-screen/',name:'login'}
                                               //y si tenes mas boludeces para mandar tambien
   console.log("cargué");
 });
 */
-
-$$(document).on('page:init', '.page[data-name="login"]', function () {
-  // Login Screen funcion de login click
-  $$('#singIn').on('click', function () {
-    var username = $$('[data-name="login"] [name="username"]').val(); 
-    var password = $$('[data-name="login"] [name="password"]').val();
-    // Alert username and password
-    app.dialog.alert("User: "+username+"</br>"+"Password: "+password);
-      //redirecting
-    mainView.router.back({
-      animate : true,
-      pushState : false,
-      ignoreCache: true,
-    }); 
-    
-  });
-});
-
+//ejemplo DOM 7 event para evento init de target page
 
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
@@ -110,10 +123,6 @@ $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
 
   dibujadorAlumnos (contenidoAlumnos);
 });
-
-
-
-
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
   console.log(e.name);
@@ -133,37 +142,6 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
   dibujadorDashboard (contenidoDashboard);
 });
 
-//contenido viene de BD
-{
-var entorno = false;
-var contenidoAlumnos = {
-  
-  alumnos: ["alumno1","alumno2","alumno3","alumno4","alumno5","alumno6","alumno7"],
-  cantidadTotal: "6",
-  asissAlumn1: "5",//ej para alumno 1
-
-}
-var contenidoCursos = {
-  
-  cursos: ["curso1","curso2","curso3","curso4","curso5"],
-  cantidadTotal: "5",
-}
-
-var contenidoDashboard = {
-  
-  totalAlumnos: contenidoAlumnos.cantidadTotal,
-  totalPagos: "$15000",
-  statusMilestone: "3/5",
-
-  feed: {
-    js: false,
-    html: true,
-    css: true,
-  },
-  asistencias: contenidoAlumnos.asissAlumn1,
-
-}
-}
 //dibujador de cards Alumnos
 function dibujadorAlumnos (contenido) {
 
