@@ -14,6 +14,10 @@ routes = [
       url: './pages/about.html',
     },
     {
+      path: '/metas/',
+      url: './pages/metas.html',
+    },
+    {
       path: '/cursos/',
       url: './pages/cursos.html',
     },
