@@ -1,11 +1,16 @@
-const AUTH = firebase.auth();
+//users.js se encarga de administrar la sección actual. Sirve los datos traidos de la DB FB
+//para el currentUser
+//observa el estado de la sección y bloquea con el access page si no hay secion actual
+
+const auth = firebase.auth();
 var persistence = firebase.auth.Auth.Persistence.LOCAL;//puede que tenga error de sintaxys!
-AUTH.setPersistence(persistence);
+auth.setPersistence(persistence);
 
-var user = AUTH.currentUser;
+var currentUser;
 
-AUTH.onAuthStateChanged(function(user) {
+auth.onAuthStateChanged(function(user) {
     if (user) {
+        currentUser = user;
         console.log(user.email+" is signed in. by AuthState");
         mainView.router.navigate('/');
     }
@@ -18,11 +23,12 @@ AUTH.onAuthStateChanged(function(user) {
 function register (data) {
     if (data.password === data.repassword)
     {
-        AUTH.createUserWithEmailAndPassword(data.email, data.password)
+        auth.createUserWithEmailAndPassword(data.email, data.password)
         .catch(function(error) {
-        // Handle Errors here.
-        console.log(error.code);
-        console.log(error.message);
+            app.methods.pushError(error);
+        })
+        .then(function(result){
+            storage("usuarios/"+result.user.uid,data);
         });
     }
     else{
@@ -31,28 +37,27 @@ function register (data) {
 }
 
 function login (data) {
-    AUTH.signInWithEmailAndPassword(data.email, data.password)
+    auth.signInWithEmailAndPassword(data.email, data.password)
         .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password') {
-            alert('Wrong password.');
+            app.methods.pushError(error);
+            if (error.code === 'auth/wrong-password') {
+            alert('Wrong password.'); //rediseñar
             }
             else {
-            alert(errorMessage);
+            alert(error.message); //rediseñar
             }
-            console.log(error);
         })
         .then(function () {
-            AUTH.updateCurrentUser(user);
+            
+
         });
 }
 function singOut () {
-    AUTH.signOut();
+    auth.signOut();
 }
 /* <- Revisar funcionamiento, no hace nada. pero tampoco tira error
 function deleteAcount (user){
     AUTH.delete(user);
 }
 */
+

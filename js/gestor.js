@@ -5,7 +5,6 @@
 //access-screen/
 
 $$(document).on('page:init', '.page[data-name="access"]', function () {
-    console.log("cargué pagina acces");
     var accObj= {};
     accObj.el_accTitle = $$('#accessTitle');
     accObj.el_accRegLog = $$('[name="acc-reg-log"]');
@@ -59,10 +58,10 @@ function accGoReg (accObj){
     accObj.el_accGo.show();
     accObj.el_accTitle.text("Register");
     accObj.el_accButtonGo.text("Go Reg!");
-    accObj.el_accButtonBack.on('click', () =>{
+    accObj.el_accButtonBack.on('click', function () {
         accRest(accObj);
     });
-    accObj.el_accButtonGo.on('click',() =>{
+    accObj.el_accButtonGo.on('click', function () {
         var data = accTakeData();
         register (data);
         console.log("User: "+data.email+ "Password: "+data.password + "Repass: "+ data.repassword +" Nick: "+data.nick);
@@ -75,5 +74,9 @@ function accTakeData (){
     accData.password = $$('#acc-password').val();
     accData.nick = $$('#acc-nick').val();
     accData.repassword = $$('#acc-repassword').val();
+    accData.date = "";
+    accData.toggle = "";
+    accData.slider = "";
+    accData.checkbox = "";
     return accData;
 }
