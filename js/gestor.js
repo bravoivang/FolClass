@@ -80,3 +80,20 @@ function accTakeData (){
     accData.checkbox = "";
     return accData;
 }
+
+function perfilUpdate () { 
+    var dataJSON = {};
+    dataJSON = {
+        //uid: currentUser.uid,
+        nick: $$('#nick').val(),
+        //email: $$('#email')[0].value, //plus: cambiar email
+        //password: $$('#password')[0].value, //plus : cambiar password
+        date: $$('#date').val(),
+        toggle: $$('#toggle').val(),
+        slider: $$('#slider').val(),
+        checkbox: $$('#checkbox').val(),
+    };
+    var pathUid = "usuarios/"+currentUser.uid;
+    update(pathUid,dataJSON);
+}
+

@@ -17,21 +17,6 @@ const ROOTref = firebase.database().ref();
 
 var preload;
 
-perfilUpdate = function () { //mudar a gestor
-    var dataJSON = {};
-    dataJSON = {
-        //uid: currentUser.uid,
-        nick: $$('#nick').val(),
-        //email: $$('#email')[0].value, //plus: cambiar email
-        //password: $$('#password')[0].value, //plus : cambiar password
-        date: $$('#date').val(),
-        toggle: $$('#toggle').val(),
-        slider: $$('#slider').val(),
-        checkbox: $$('#checkbox').val(),
-    };
-    var pathUid = "usuarios/"+currentUser.uid;
-    update(pathUid,dataJSON);
-}
 
 function storage (path, obj) {
     fbdb.ref(path).set(obj);
@@ -52,4 +37,7 @@ function firstCharge (){
         preload = snap.val();
     });
 }
+/*
+function observadorGeneral (){
+fbdb.ref('usuarios/').on('value',function(){console.log("algo cambió!");});}*/
 

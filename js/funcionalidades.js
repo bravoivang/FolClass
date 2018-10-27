@@ -23,7 +23,10 @@ var app  = new Framework7({
     helloWorld: function () {
       app.dialog.alert('Hello World!');
     },
-    
+    pushError: function (error){
+      app.lastError.push(error);
+      console.log("error disponible en app.lastError");
+    }
   },
   // App routes
   routes: routes,
@@ -31,7 +34,7 @@ var app  = new Framework7({
   panel: {
     //leftBreakpoint: 960, clava el panel left como parte de la pagina y no como una solapa por encima    
   },
-    
+  lastError: [],
 });
 
 // Init/Create main view
@@ -61,8 +64,8 @@ panelLeft.on('open', nonan)
   var entorno = true;
   var contenidoAlumnos = {
     
-    alumnos: ["alumno1","alumno2","alumno3","alumno4","alumno5","alumno6","alumno7"],
-    cantidadTotal: "6",
+    alumnos: ["1111","2222","3333","4444","5555","6666","7777","1111","2222","3333","4444","5555","6666","7777","6666","7777"],
+    cantidadTotal: "7",
     asissAlumn1: "5",//ej para alumno 1
   
   }
@@ -99,12 +102,12 @@ panelLeft.on('close', function () {
   console.log("panel cerrado <==");
 });
 
+/*app.accordion.close(el) - close specified accordion item
 
-//var entorno = true;
-/*if (!entorno){
-  mainView.router.navigate('/login-screen/');
-  console.log("no estas logeado");  
-} */
+item - HTMLElement or string (with CSS Selector) of accordion-item element (<div class="accordion-item">). Required
+add class => color-red bg-color-black a curso seleccionado
+*/
+
 /*//ejemplo app event con router
 app.on('click', function () {
   mainView.router.navigate("/about/"); //router.navigate se usa para navegar entre pages
@@ -115,7 +118,6 @@ app.on('click', function () {
 });
 */
 //ejemplo DOM 7 event para evento init de target page
-
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
   console.log(e.name);
@@ -135,36 +137,36 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
   console.log(e.name);
   console.log("recarga");
 
-  /*if(!entorno){
-
-  }*/
-
   dibujadorDashboard (contenidoDashboard);
+  addEditCard ();
 });
 
 //dibujador de cards Alumnos
 function dibujadorAlumnos (contenido) {
 
   var rows = Math.ceil(contenido.alumnos.length / 4);
-  var arrayAlumnos = contenido.alumnos.reverse();
+  var arrayAlumnos = contenido.alumnos;
   var dashboard = $$('[data-name="alumnos"] .dashboard'); console.log(dashboard);
   //var loopAux = 4;
   //var restAux = contenido.alumnos.length % 4;
-
-  
-  for (var i = 0; 2>i; i++)
+  var aux = 0;
+  console.log("Completo",arrayAlumnos)
+  for (var i = 0; rows>i; i++)
   {  
     var currentRow = $$('<div>'); 
     currentRow.addClass("row");
 
-    for (var j = 0; 4>j; j++)
+    for (var j = 0; 4>j; j++,aux++)
     {
       //creo columna
       var currentCol = $$('<div>');  
       currentCol.addClass("col-30.tablet-30.desktop-30"); 
       //creo card
-      if(arrayAlumnos.length < 1)
+      if(arrayAlumnos.length-aux < 1)
       {
+        var currentCard = $$('<div>');
+        currentCard.addClass("card-content.card-content-padding");
+        currentCard.append("none");
         //card vacia. solo espacio de columna para compretar el 100% con 4 espacios
         // card Style empy para alumno
       }
@@ -172,7 +174,9 @@ function dibujadorAlumnos (contenido) {
       {
         var currentCard = $$('<div>');
         currentCard.addClass("card-content.card-content-padding");
-        currentCard.append(arrayAlumnos.pop());
+        console.log("El",arrayAlumnos[aux])
+        currentCard.append(arrayAlumnos[aux]);
+        console.log(i,j);
       }
       //inserto card a columna      
       currentCol.append(currentCard);
@@ -318,4 +322,6 @@ function dibujadorDashboard (contenido) {
   }
 }
   
+function addEditCard (){
 
+}

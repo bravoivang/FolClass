@@ -64,10 +64,25 @@
                       <a href="/" data-view=".view-main" class="panel-close">Dashboard</a>
                     </li>
                     <li>
-                      <a href="/cursos/" data-view=".view-main" class="panel-close">Cursos</a>
+                      <a href="/metas/" data-view=".view-main" class="panel-close">Metas</a>
                     </li>
                     <li>
                       <a href="/alumnos/" data-view=".view-main" class="panel-close">Alumnos</a>
+                    </li>
+                    <li class="accordion-item">
+                      <a class="accordion-item-toggle">CURSOS</a>
+                      <div class="accordion-item-content text-align-center">
+                        <a href="" class="button">curos1</a>
+                      </div>
+                      <div class="accordion-item-content text-align-center">
+                        <a href="" class="button">curos2</a>
+                      </div>
+                      <div class="accordion-item-content text-align-center">
+                        <a href="" class="button">curos3</a>
+                      </div>
+                      <div class="accordion-item-content text-align-center ">
+                        <a href="" class="button">curos4</a>
+                      </div>
                     </li>
                    
                   </ul>
@@ -86,12 +101,11 @@
                 <div class="list links-list">
                   <ul>
                     <li>
-                    <a href="/about/"  class="" >About</a>
+                      <a href="/about/"  class="" >About</a>
                     </li> 
                     <li>
-                      <a  href="#"  class="" >Sing out</a>
-                      <p id="singon">context a null</p>
-                    </li>                    
+                      <a href="#"  class="panel-close" onclick="singOut()" >Sing out</a>
+                    </li>                  
                   </ul>
                 </div>
 
@@ -152,9 +166,9 @@
         <!-- App routes -->
     <script src="js/routes.js"></script>
         <!-- carga de funcionalidades propias -->
-    <script type="text/javascript" src="js/funcionalidades.js"></script> <!--program-->
-    <script src="js/CRUD.js"></script> <!--crud con FB-->
-    <script src="js/users.js"></script> <!--crud con FB-->
-    
+        <script src="js/CRUD.js"></script> <!--crud con FB-->
+        <script type="text/javascript" src="js/funcionalidades.js"></script> <!--program-->
+        <script src="js/users.js"></script> <!--crud con FB-->
+        <script src="js/gestor.js"></script> <!--crud con FB-->
 </body>
 </html>
