@@ -1,19 +1,24 @@
 //users.js se encarga de administrar la sección actual. Sirve los datos traidos de la DB FB
 //para el currentUser
-//observa el estado de la sección y bloquea con el access page si no hay secion actual
+//observa el estado de la seción y bloquea con el access page si no hay secion actual
 
 const auth = firebase.auth();
 var persistence = firebase.auth.Auth.Persistence.LOCAL;//puede que tenga error de sintaxys!
 auth.setPersistence(persistence);
 
-var currentUser; //info completa de user =>currentUser.user.uid = uid
-var currentCourse; //info completa del course actual currentCourse.metas / alumnos / etc
+var currentUser = {}; //info completa de user =>currentUser.user.uid = uid
+var currentCourse = {}; //info completa del course actual currentCourse.metas / alumnos / etc
+var myIdCourses;// = []; ? tiene que ser dinamica y se esta cargando solo en el preload
 
-var myIdCourses;// ? tiene que ser dinamica y se esta cargando solo en el preload
 
 auth.onAuthStateChanged(function(user) {
     if (user) {
-        currentUser = user;
+        console.log(user.uid);
+        readUser(user.uid); // OBJETO USUARIO
+        console.log(currentUser.myCourses.a); //problema de sincronismos. no tengo todavia localmente currentUser{}
+        readCourse(currentUser.myCourses.a); // OBJETO CURSO
+        myIdCourses = currentUser.myCourses;
+
         console.log(user.email+" is signed in. by AuthState");
         mainView.router.navigate('/');
     }
@@ -64,8 +69,10 @@ function deleteAcount (user){
 }
 */
 //cursos van por idCurso
+/*
 function getDataFor (view){
     fbdb.ref('cursos/'+currentUser.user.uid).once('child_added', function (snap) {
-        preload = snap.val();
+        userPreload = snap.val();
     });
 }
+*/

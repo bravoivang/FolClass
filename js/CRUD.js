@@ -3,13 +3,17 @@
 
 const fbdb = firebase.database();
 const ROOTref = firebase.database().ref();
- 
-var preload = fbdb.ref('usuarios/'+currentUser.user.uid).once('child_added', function (snap) {
-    var result = snap.val();
-    myIdCourses = result.myCourses
-    return result; //esto funciona ? mmmm
-});
-
+/*
+var resultPreload;
+ auth.onAuthStateChanged(function(user) <= ya esta trayendo al user inicialmente, ESTE ES EL PRELOAD
+function userPreload(){
+        preload = fbdb.ref('usuarios/'+currentUser.uid).once('child_added', function (snap) {
+        resultPreload = snap.val();
+        myIdCourses = resultPreload.myCourses;
+        //currentCourse = resultPreload.myCourses.a; ??
+    });
+}
+*/
 function storage (path, obj) {
     fbdb.ref(path).set(obj);
 }
@@ -37,9 +41,15 @@ function createCourse (){
     storage(path, newCourseData);
 }
 
-function readCourse (){ //lee el curso actual
-   fbdb.ref('cursos/'+currentCourse).on('child_added',function(snap){
-       console.log(snap); 
+function readCourse (idCourse){ //lee el curso actual
+    fbdb.ref('cursos/'+idCourse).on('value',function(snap){
+    currentCourse = snap.val(); 
+   });  
+}
+
+function readUser (uid){ //lee el curso actual
+    fbdb.ref('usuarios/'+uid).on('value',function(snap){
+    currentUser = snap.val(); 
    });  
 }
 
