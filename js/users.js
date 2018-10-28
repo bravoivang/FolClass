@@ -15,9 +15,9 @@ auth.onAuthStateChanged(function(user) {
     if (user) {
         console.log(user.uid);
         readUser(user.uid); // OBJETO USUARIO
-        console.log(currentUser.myCourses.a); //problema de sincronismos. no tengo todavia localmente currentUser{}
-        readCourse(currentUser.myCourses.a); // OBJETO CURSO
-        myIdCourses = currentUser.myCourses;
+        console.log(currentUser.inscriptos.array[0]); //problema de sincronismos. no tengo todavia localmente currentUser{}
+        readCourse(currentUser.inscriptos.array[0]); // OBJETO CURSO
+        
 
         console.log(user.email+" is signed in. by AuthState");
         mainView.router.navigate('/');

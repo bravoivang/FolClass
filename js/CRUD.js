@@ -50,6 +50,7 @@ function readCourse (idCourse){ //lee el curso actual
 function readUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
     currentUser = snap.val(); 
+    myIdCourses = currentUser.myCourses;
    });  
 }
 

@@ -122,23 +122,27 @@ app.on('click', function () {
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
   var content = currentCourse;
+  extContent = content;
   cardDrawing (content,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
-  
-  cardDrawing (contenidoCursos,"card-basic");
+  var content = currentUser.myCourses;
+  cardDrawing (content,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
   
   cardDrawing (contenidoDashboard,"card-basic");
 });
-
+var extContent;
+var extAlumnos;
 function cardDrawing (content,cssCard) {
   var divNum = 4;
-  var rows = Math.ceil(content.meta.cantidad / divNum);
-  var arrayAlumnos = content.nombres;
+  var rows = Math.ceil(content.inscriptos.meta.cantidad / divNum);
+  var arrayAlumnos = []; 
+  arrayAlumnos = content.inscriptos.array;
+  extAlumnos = arrayAlumnos;
   var cardZone = $$('.cardZone'); 
   var aux = 0;
   
@@ -163,7 +167,9 @@ function cardDrawing (content,cssCard) {
       {
         var currentCard = $$('<div>');
         currentCard.addClass("card-content card-content-padding"+" "+cssCard);
-        currentCard.append(arrayAlumnos[aux]);
+        currentCard.append(arrayAlumnos[aux]); /*aca estoy poniendo solo los nombres
+                                                pero iria toda la data. Lo cual tiene que ser una funcion
+                                                externa para cada caso*/
       }
       //inserto card a columna      
       currentCol.append(currentCard);
