@@ -1,14 +1,3 @@
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyAc1lu7RaXTzv0-0kK1G3hC__zWeZHUAkU",
-    authDomain: "bravofolclass.firebaseapp.com",
-    databaseURL: "https://bravofolclass.firebaseio.com",
-    projectId: "bravofolclass",
-    storageBucket: "bravofolclass.appspot.com",
-    messagingSenderId: "115386585030"
-  };
-firebase.initializeApp(config);
-
 //¿quien genera el path? => el que lo llama
 //¿quien parsea el obj? => nadie, se guarda entero. El que lo pide despues lo filtra ;)
 
