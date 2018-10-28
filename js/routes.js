@@ -30,6 +30,11 @@ routes = [
       url: './pages/alumnos.html',
     },
     {
+      path: '/add-student/',
+      url: './pages/add-student.html',
+    },
+    
+    {
       path: '/perfil/',
       url: './pages/perfil.html',
     },

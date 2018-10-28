@@ -147,10 +147,9 @@ function cardDrawing (content,cssCard) {
   var rows = Math.ceil(content.inscriptos.meta.cantidad / divNum);
   var names = content.inscriptos.names;
   var array = [];
-  var objLenght = 0;
+  var objLenght = getObjLength(names);
   for (var key in names){
     array.push(names[key]);
-    objLenght++;
     console.log(names[key]);
   }
   var cardZone = $$('.cardZone'); 

@@ -13,7 +13,34 @@ function userPreload(){
         //currentCourse = resultPreload.myCourses.a; ??
     });
 }
+*//*
+readCourse("123456789");
+getCantidad('cursos/123456789/alumnos/inscriptos/names');
+getCantidad('cursos/123456789/objetivos/inscriptos/names');
+getCantidad('usuarios/'+currentUser.uid+'/inscriptos/names');
 */
+/*readCourse(Object.keys(currentUser.inscriptos.names)[0]);
+getCantidad('cursos/'+
+                    Object.keys(currentUser.inscriptos.names)[0]+
+                    '/alumnos.inscriptos/names');
+getCantidad('cursos/'+
+                    Object.keys(currentUser.inscriptos.names)[0]+
+                    '/objetivos.inscriptos/names');
+getCantidad('usuarios/'+currentUser.uid+'/inscriptos/names');*/
+/*
+var i = 0;
+var funtArray = [a,b,c,d];
+
+var myInterval = setInterval(function(){
+
+    funtArray[i]();
+    i++;
+    console.log("inicializando: "+i);
+    if (i == 3) clearInterval(myInterval); 
+    },1000); 
+*/
+
+
 function storage (path, obj) {
     fbdb.ref(path).set(obj);
 
@@ -32,10 +59,13 @@ function remove (path){
 function createStructCourse (){
     var dataJSON = {};
     dataJSON = {
-        name: "",
-        tematica: "",
-        certificacion: "",
-        cupo: "",
+        data : {
+            name: "",
+            tematica: "",
+            certificacion: "",
+            cupo: "",
+        },
+        
         objetivos: {
             inscriptos: {
                 meta: {
@@ -76,6 +106,10 @@ function createCourse (){
     storage(path, newCourseData);
 }
 
+function retrieveUserInformation(user){
+    readUser(user.uid); // OBJETO USUARIO
+}
+
 function readCourse (idCourse){ //lee el curso actual
     fbdb.ref('cursos/'+idCourse).on('value',function(snap){
     currentCourse = snap.val(); 
@@ -85,7 +119,9 @@ function readCourse (idCourse){ //lee el curso actual
 function readUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
     currentUser = snap.val(); 
-    myIdCourses = currentUser.inscriptos.array;
+    myIdCourses = currentUser.inscriptos.names;
+
+    readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
    });  
 }
 
@@ -109,6 +145,7 @@ function getCantidad (path){  //creeria qeu es una cloudFunction
     return cantidad;
 } 
 
+//helper
 function getObjLength (obj){
 	var cont = 0;
 	for (var key in obj){
@@ -116,3 +153,5 @@ function getObjLength (obj){
 	}
 return cont;
 }
+
+

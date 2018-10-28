@@ -13,12 +13,7 @@ var myIdCourses = [];// = []; ? tiene que ser dinamica y se esta cargando solo e
 
 auth.onAuthStateChanged(function(user) {
     if (user) {
-        console.log(user.uid);
-        readUser(user.uid); // OBJETO USUARIO
-        console.log(currentUser.inscriptos.name[0]); //problema de sincronismos. no tengo todavia localmente currentUser{}
-        readCourse(currentUser.inscriptos.name[0]); // OBJETO CURSO
-        
-
+        retrieveUserInformation(user);
         console.log(user.email+" is signed in. by AuthState");
         mainView.router.navigate('/');
     }
@@ -76,3 +71,4 @@ function getDataFor (view){
     });
 }
 */
+

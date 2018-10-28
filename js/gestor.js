@@ -101,10 +101,12 @@ function perTakeData () {
 function couTakeData (){
     var dataJSON = {};
     dataJSON = {
-        name: $$('#name').val(),
-        tematica: $$('#tematica').val(),
-        certificacion: $$('#certificacion').val(),
-        cupo: $$('#cupo').val(),
+        data : {
+            name: $$('#name').val(),
+            tematica: $$('#tematica').val(),
+            certificacion: $$('#certificacion').val(),
+            cupo: $$('#cupo').val(),
+        },        
         objetivos: {
             inscriptos: {
                 meta: {
@@ -132,7 +134,34 @@ function couTakeData (){
         },
     };
     var pathUid = "cursos/"+currentCourse.meta.uid;
-    update(pathUid, dataJSON);
+    storage(pathUid+'/data',dataJSON.data);
+    storage(pathUid+"/objetivos/inscriptos/names" , dataJSON.objetivos.inscriptos.names);
+    update('usuarios/'+currentUser.uid+'/inscriptos/names/',{[currentCourse.meta.uid]: dataJSON.name}); //ECMA6
+}
+
+function stuTakeData (){
+    var dataJSON = {};
+    dataJSON = {   
+        alumnos: {
+            inscriptos: {
+                meta: {
+                    cantidad : "",
+                },
+                names: {
+                    [$$('#name').val()]: {
+                        apellido: $$('#apellido').val(),
+                        edad,
+                        email,
+                        
+                    },
+                }
+            }
+        },
+    };
+
+    
+    var pathUid = "cursos/"+currentCourse.meta.uid;
+    update(pathUid+'/data',dataJSON.data);
     update(pathUid+"/objetivos/inscriptos/names" , dataJSON.objetivos.inscriptos.names);
-    update('usuarios/'+currentUser.uid+'/inscriptos/names/',{ [currentCourse.meta.uid]: dataJSON.name}); //ECMA6
+    update('usuarios/'+currentUser.uid+'/inscriptos/names/',{[currentCourse.meta.uid]: dataJSON.name}); //ECMA6
 }
