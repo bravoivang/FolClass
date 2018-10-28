@@ -3,3 +3,5 @@ framework7.ios.css
 framework7.ios.min.css
 framework7.rtl.ios.css
 framework7.rtl.ios.min.css
+
+js/firebaseApiKey.js

@@ -14,9 +14,12 @@ firebase.initializeApp(config);
 
 const fbdb = firebase.database();
 const ROOTref = firebase.database().ref();
-
-var preload;
-
+ 
+var preload = fbdb.ref('usuarios/'+currentUser.user.uid).once('child_added', function (snap) {
+    var result = snap.val();
+    myIdCourses = result.myCourses
+    return result; //esto funciona ? mmmm
+});
 
 function storage (path, obj) {
     fbdb.ref(path).set(obj);
@@ -32,12 +35,27 @@ function remove (path){
     });
 }
 
-function firstCharge (){
-    fbdb.ref('usuarios/'+currentUser.user.uid).once('child_added', function (snap) {
-        preload = snap.val();
-    });
-}
+
 /*
 function observadorGeneral (){
 fbdb.ref('usuarios/').on('value',function(){console.log("algo cambió!");});}*/
 
+function createCourse (){
+    var idNewAvaileble = generateNewId();
+    var newCourseData;//= datos del gestor. formulario de la pagina actual
+    var path = 'cursos/'+idNewAvaileble;
+    //idCourses.push(idNewAvaileble); update "metadata de cursos" cloudFunction tiene que actualizar lenght de cursos
+    storage(path, newCourseData);
+}
+
+function readCourse (){ //lee el curso actual
+   fbdb.ref('cursos/'+currentCourse).on('child_added',function(snap){
+       console.log(snap); 
+   });  
+}
+
+function generateNewId(){
+    //cloud function. El servidor tiene que generar los id para que sean unicos y no se pisen
+    //entre multiples usuarios
+    return Math.ceil(Math.random()*1000000);
+}

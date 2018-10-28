@@ -138,10 +138,10 @@ function cardDrawing (content,cssCard) {
   var divNum = 4;
   var rows = Math.ceil(content.alumnos.length / divNum);
   var arrayAlumnos = content.alumnos;
-  var dashboard = $$('.cardZone'); 
+  var cardZone = $$('.cardZone'); 
   var aux = 0;
   
-  for (var i = 0; rows>i; i++)
+  for (var i = 0; rows>i; i++)// cont->card->row->dashboard
   {  
     var currentRow = $$('<div>'); 
     currentRow.addClass("row");
@@ -170,12 +170,13 @@ function cardDrawing (content,cssCard) {
       currentRow.append(currentCol);
     }
     //inserto row a dashboard
-    dashboard.append(currentRow);
+    cardZone.append(currentRow);
   }
 }
 
 
 function addEditCard (view){ //rediseñar
+  var cardZone = $$('.cardZone'); 
   var currentRow = $$('<div>'); 
   currentRow.addClass("row");
   var currentCol = $$('<div>');  
@@ -185,5 +186,5 @@ function addEditCard (view){ //rediseñar
   currentCard.append(view);
   currentCol.append(currentCard);
   currentRow.append(currentCol);
-  dashboard.append(currentRow);
+  cardZone.append(currentRow);
 }

@@ -6,9 +6,10 @@ const auth = firebase.auth();
 var persistence = firebase.auth.Auth.Persistence.LOCAL;//puede que tenga error de sintaxys!
 auth.setPersistence(persistence);
 
-var currentUser;
-var currentCourse;
-var mycourses = currentUser.mycourses; //id de cursos
+var currentUser; //info completa de user =>currentUser.user.uid = uid
+var currentCourse; //info completa del course actual currentCourse.metas / alumnos / etc
+
+var myIdCourses;// ? tiene que ser dinamica y se esta cargando solo en el preload
 
 auth.onAuthStateChanged(function(user) {
     if (user) {
@@ -62,7 +63,7 @@ function deleteAcount (user){
     AUTH.delete(user);
 }
 */
-
+//cursos van por idCurso
 function getDataFor (view){
     fbdb.ref('cursos/'+currentUser.user.uid).once('child_added', function (snap) {
         preload = snap.val();
