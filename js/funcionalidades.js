@@ -93,6 +93,7 @@ panelLeft.on('open', nonan)
 
 panelLeft.on('open', function (panel) {
   console.log("panel open con eventos para objetos instanciados");
+ 
  /* console.log("on devuelve para el callback 'panel' que es el objeto instanciado, por lo que se lo puede manipular");
   setTimeout(function () {
     panel.close(true);
@@ -120,7 +121,7 @@ app.on('click', function () {
 //ejemplo DOM 7 event para evento init de target page
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
-  var content = getDataFor (alumnos);
+  var content = currentCourse;
   cardDrawing (content,"card-basic");
 });
 
@@ -136,8 +137,8 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
 
 function cardDrawing (content,cssCard) {
   var divNum = 4;
-  var rows = Math.ceil(content.alumnos.length / divNum);
-  var arrayAlumnos = content.alumnos;
+  var rows = Math.ceil(content.meta.cantidad / divNum);
+  var arrayAlumnos = content.nombres;
   var cardZone = $$('.cardZone'); 
   var aux = 0;
   
