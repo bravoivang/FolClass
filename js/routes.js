@@ -22,6 +22,10 @@ routes = [
       url: './pages/cursos.html',
     },
     {
+      path: '/add-course/',
+      url: './pages/add-course.html',
+    },
+    {
       path: '/alumnos/',
       url: './pages/alumnos.html',
     },

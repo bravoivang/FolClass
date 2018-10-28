@@ -1,4 +1,4 @@
-<div class="page" data-name="perfil">
+<div class="page" data-name="add-course">
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
@@ -7,19 +7,19 @@
             <span class="ios-only">Back</span>
           </a>
         </div>
-        <div class="title">CRUD</div>
+        <div class="title">add-course</div>
       </div>
     </div>
     <div class="page-content">
-      <div class="block-title">Form Example</div>
+      <div class="block-title">Nuevo curso</div>
       <div class="list no-hairlines-md">
         <ul>
           <li>
             <div class="item-content item-input">
               <div class="item-inner">
-                <div class="item-title item-label">Nick</div>
+                <div class="item-title item-label">Nombre</div>
                 <div class="item-input-wrap">
-                  <input type="text" placeholder="Your nick" id="nick"/>
+                  <input type="text" placeholder="p. e. Curso mobile" id="name"/>
                 </div>
               </div>
             </div>
@@ -27,29 +27,9 @@
           <li>
             <div class="item-content item-input">
               <div class="item-inner">
-                <div class="item-title item-label">E-mail</div>
+                <div class="item-title item-label">Temática</div>
                 <div class="item-input-wrap">
-                  <input type="email" placeholder="E-mail" id="email"/>
-                </div>
-              </div>
-            </div>
-          </li>       
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">Password</div>
-                <div class="item-input-wrap">
-                  <input type="password" placeholder="Password" id="password"/>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">Birth date</div>
-                <div class="item-input-wrap">
-                  <input type="date" placeholder="Birth day" value="2014-04-30" id="date"/>
+                  <input type="text" placeholder="p.e. mobile" id="tematica"/>
                 </div>
               </div>
             </div>
@@ -57,10 +37,10 @@
           <li>
             <div class="item-content">
               <div class="item-inner">
-                <div class="item-title">Toggle</div>
+                <div class="item-title">Certificación</div>
                 <div class="item-after">
                   <label class="toggle toggle-init">
-                    <input type="checkbox" id="toggle">
+                    <input type="checkbox" id="certificacion">
                     <span class="toggle-icon"></span>
                   </label>
                 </div>
@@ -70,10 +50,10 @@
           <li>
             <div class="item-content item-input">
               <div class="item-inner">
-                <div class="item-title item-label">Slider</div>
+                <div class="item-title item-label">Cupo</div>
                 <div class="item-input-wrap">
                   <div class="range-slider range-slider-init" data-label="true">
-                    <input type="range" value="50" min="0" max="100" step="1" id="slider">
+                    <input type="range" value="0" min="0" max="35" step="1" id="cupo">
                   </div>
                 </div>
               </div>
@@ -81,24 +61,42 @@
           </li>
         </ul>
       </div>
-      <div class="block-title">Checkbox group</div>
+      <div class="block-title">Objetivos</div>
       <div class="list">
         <ul>
           <li>
             <label class="item-checkbox item-content">
-              <input type="checkbox" name="checkbox" value="Drinks" id="checkbox"/>
+              <input type="checkbox" name="checkbox" value="Html" id="html"/>
               <i class="icon icon-checkbox"></i>
               <div class="item-inner">
-                <div class="item-title">Drinks</div>
+                <div class="item-title">Html</div>
               </div>
             </label>
           </li>
+          <li>
+              <label class="item-checkbox item-content">
+                <input type="checkbox" name="checkbox" value="Js" id="js"/>
+                <i class="icon icon-checkbox"></i>
+                <div class="item-inner">
+                  <div class="item-title">Js</div>
+                </div>
+              </label>
+            </li>
+            <li>
+                <label class="item-checkbox item-content">
+                  <input type="checkbox" name="checkbox" value="Css" id="css"/>
+                  <i class="icon icon-checkbox"></i>
+                  <div class="item-inner">
+                    <div class="item-title">Css</div>
+                  </div>
+                </label>
+              </li>
         </ul>
       </div>
       <div class="block-title">Buttons</div>
       <div class="block block-strong">    
         <p class="row">
-          <a href="#" class="col button button-raised button-fill" onclick="perTakeData()">Raised Fill</a>
+          <a href="#" class="col button button-raised button-fill" onclick="couTakeData()">Raised Fill</a>
         </p>
       </div>
       

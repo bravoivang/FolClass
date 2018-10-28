@@ -69,19 +69,19 @@ function accGoReg (accObj){
 }
 
 function accTakeData (){
-    var accData = {};
-    accData.email = $$('#acc-email').val(); 
-    accData.password = $$('#acc-password').val();
-    accData.nick = $$('#acc-nick').val();
-    accData.repassword = $$('#acc-repassword').val();
-    accData.date = "";
-    accData.toggle = "";
-    accData.slider = "";
-    accData.checkbox = "";
-    return accData;
+    var currentData = {};
+    currentData.email = $$('#acc-email').val(); 
+    currentData.password = $$('#acc-password').val();
+    currentData.nick = $$('#acc-nick').val();
+    currentData.repassword = $$('#acc-repassword').val();
+    currentData.date = "";
+    currentData.toggle = "";
+    currentData.slider = "";
+    currentData.checkbox = "";
+    return currentData;
 }
 
-function perfilUpdate () { 
+function perTakeData () { 
     var dataJSON = {};
     dataJSON = {
         //uid: currentUser.uid,
@@ -97,3 +97,42 @@ function perfilUpdate () {
     update(pathUid,dataJSON);
 }
 
+
+function couTakeData (){
+    var dataJSON = {};
+    dataJSON = {
+        name: $$('#name').val(),
+        tematica: $$('#tematica').val(),
+        certificacion: $$('#certificacion').val(),
+        cupo: $$('#cupo').val(),
+        objetivos: {
+            inscriptos: {
+                meta: {
+                    cantidad: "",
+                },
+                names: {
+                    html: $$('#html').val(),
+                    js: $$('#js').val(),
+                    css: $$('#css').val(),
+                }
+            }
+        },
+        alumnos: {
+            inscriptos: {
+                meta: {
+                    cantidad : "",
+                },
+                names: {
+                    1: "",
+                }
+            }
+        },
+        meta: {
+            uid : currentCourse.meta.uid,
+        },
+    };
+    var pathUid = "cursos/"+currentCourse.meta.uid;
+    update(pathUid, dataJSON);
+    update(pathUid+"/objetivos/inscriptos/names" , dataJSON.objetivos.inscriptos.names);
+    update('usuarios/'+currentUser.uid+'/inscriptos/names/',{ [currentCourse.meta.uid]: dataJSON.name}); //ECMA6
+}

@@ -16,6 +16,7 @@ function userPreload(){
 */
 function storage (path, obj) {
     fbdb.ref(path).set(obj);
+
 }
 
 function update (pathUid, valuesChanged) {
@@ -28,6 +29,40 @@ function remove (path){
     });
 }
 
+function createStructCourse (){
+    var dataJSON = {};
+    dataJSON = {
+        name: "",
+        tematica: "",
+        certificacion: "",
+        cupo: "",
+        objetivos: {
+            inscriptos: {
+                meta: {
+                    cantidad : "",
+                },
+                names: {
+                    1: "",
+                }
+            }
+        },
+        alumnos: {
+            inscriptos: {
+                meta: {
+                    cantidad : "",
+                },
+                names: {
+                    1: "",
+                }
+            }
+        },
+        meta: {
+            uid : currentCourse.meta.uid,
+        }
+    };
+    var pathUid = "cursos/"+currentCourse.meta.uid;
+    storage(pathUid,dataJSON);
+}
 
 /*
 function observadorGeneral (){
@@ -50,7 +85,7 @@ function readCourse (idCourse){ //lee el curso actual
 function readUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
     currentUser = snap.val(); 
-    myIdCourses = currentUser.myCourses;
+    myIdCourses = currentUser.inscriptos.array;
    });  
 }
 
@@ -58,4 +93,26 @@ function generateNewId(){
     //cloud function. El servidor tiene que generar los id para que sean unicos y no se pisen
     //entre multiples usuarios
     return Math.ceil(Math.random()*1000000);
+}
+
+//listeners entre base de datos.  
+function getCantidad (path){  //creeria qeu es una cloudFunction
+    var cantidad = {
+        cantidad,
+    };
+	fbdb.ref(path).on('value',function (snap) {
+		cantidad.cantidad = getObjLength(snap.val());
+    });
+    var lastIndex = fbdb.ref(path).getKey();
+    var rePath = path.slice(0,-lastIndex.length)+'/meta';
+    update(rePath,cantidad);
+    return cantidad;
+} 
+
+function getObjLength (obj){
+	var cont = 0;
+	for (var key in obj){
+		cont++;
+	}
+return cont;
 }

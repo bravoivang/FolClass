@@ -120,29 +120,39 @@ app.on('click', function () {
 */
 //ejemplo DOM 7 event para evento init de target page
 
-$$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
-  var content = currentCourse;
-  extContent = content;
-  cardDrawing (content,"card-basic");
-});
-
-$$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
-  var content = currentUser.myCourses;
-  cardDrawing (content,"card-basic");
-});
-
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
   
   cardDrawing (contenidoDashboard,"card-basic");
 });
-var extContent;
-var extAlumnos;
+
+$$(document).on('page:init', '.page[data-name="objetivos"]', function (e) {
+  var content = currentCourse.objetivos;
+  cardDrawing (content,"card-basic");
+});
+
+$$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
+  var content = currentCourse.alumnos; //la db deberia ser como objetivos. para alumnos tendria que menterme en .alumnos
+  cardDrawing (content,"card-basic");
+});
+
+$$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
+  var content = currentUser; //idem para ver los id cursos tendria que menterme en .alumnos
+  cardDrawing (content,"card-basic");
+});
+
+
+//se encarga de dibujar los slot de cards con sus respectivas rows según inscriptos en la DB
 function cardDrawing (content,cssCard) {
   var divNum = 4;
   var rows = Math.ceil(content.inscriptos.meta.cantidad / divNum);
-  var arrayAlumnos = []; 
-  arrayAlumnos = content.inscriptos.array;
-  extAlumnos = arrayAlumnos;
+  var names = content.inscriptos.names;
+  var array = [];
+  var objLenght = 0;
+  for (var key in names){
+    array.push(names[key]);
+    objLenght++;
+    console.log(names[key]);
+  }
   var cardZone = $$('.cardZone'); 
   var aux = 0;
   
@@ -157,7 +167,7 @@ function cardDrawing (content,cssCard) {
       var currentCol = $$('<div>');  
       currentCol.addClass("col-30.tablet-30.desktop-30"); 
       //creo card
-      if(arrayAlumnos.length-aux < 1)
+      if(objLenght-aux < 1)
       {
         var currentCard = $$('<div>');
         currentCard.addClass("card-null card-content card-content-padding"+" "+cssCard);
@@ -167,7 +177,7 @@ function cardDrawing (content,cssCard) {
       {
         var currentCard = $$('<div>');
         currentCard.addClass("card-content card-content-padding"+" "+cssCard);
-        currentCard.append(arrayAlumnos[aux]); /*aca estoy poniendo solo los nombres
+        currentCard.append(array[aux]); /*aca estoy poniendo solo los nombres
                                                 pero iria toda la data. Lo cual tiene que ser una funcion
                                                 externa para cada caso*/
       }

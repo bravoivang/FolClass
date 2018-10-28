@@ -8,15 +8,15 @@ auth.setPersistence(persistence);
 
 var currentUser = {}; //info completa de user =>currentUser.user.uid = uid
 var currentCourse = {}; //info completa del course actual currentCourse.metas / alumnos / etc
-var myIdCourses;// = []; ? tiene que ser dinamica y se esta cargando solo en el preload
+var myIdCourses = [];// = []; ? tiene que ser dinamica y se esta cargando solo en el preload
 
 
 auth.onAuthStateChanged(function(user) {
     if (user) {
         console.log(user.uid);
         readUser(user.uid); // OBJETO USUARIO
-        console.log(currentUser.inscriptos.array[0]); //problema de sincronismos. no tengo todavia localmente currentUser{}
-        readCourse(currentUser.inscriptos.array[0]); // OBJETO CURSO
+        console.log(currentUser.inscriptos.name[0]); //problema de sincronismos. no tengo todavia localmente currentUser{}
+        readCourse(currentUser.inscriptos.name[0]); // OBJETO CURSO
         
 
         console.log(user.email+" is signed in. by AuthState");
