@@ -56,7 +56,7 @@ function remove (path){
     });
 }
 
-function createStructCourse (){
+function createStructCourse (){ //funcion interna
     var dataJSON = {};
     dataJSON = {
         data : {
@@ -98,12 +98,40 @@ function createStructCourse (){
 function observadorGeneral (){
 fbdb.ref('usuarios/').on('value',function(){console.log("algo cambió!");});}*/
 
-function createCourse (){
+function generateNewId(){
+    //cloud function. El servidor tiene que generar los id para que sean unicos y no se pisen
+    //entre multiples usuarios
+    return Math.ceil(Math.random()*1000000);
+}
+
+function createCourse (dataObj){
     var idNewAvaileble = generateNewId();
-    var newCourseData;//= datos del gestor. formulario de la pagina actual
+    var newCourseData =dataObj;//= datos del gestor. formulario de la pagina actual
     var path = 'cursos/'+idNewAvaileble;
     //idCourses.push(idNewAvaileble); update "metadata de cursos" cloudFunction tiene que actualizar lenght de cursos
     storage(path, newCourseData);
+}
+
+function updateAtributeCourse (idCurso, atribute, dataObj){  //cambia un atributo a la vez
+    //atribute format : ['cursos/] => 'data/.../'
+    var path = 'cursos/'+idCurso+atribute;
+    update (path, dataObj);
+}
+
+function createStudent (dataObj) {
+    dataObj.password ='Folclass1234';
+    dataObj.repassword = dataObj.password;
+    //parche momentaneo. Register fuerza a cambiar la seción, por lo que dispara auth.onUserStateChange()
+    var creador = currentUser;
+    register(dataObj);
+    singOut();
+    login(creador);
+
+
+}
+
+function updateAtributeStudent () {
+
 }
 
 function retrieveUserInformation(user){
@@ -113,6 +141,7 @@ function retrieveUserInformation(user){
 function readCourse (idCourse){ //lee el curso actual
     fbdb.ref('cursos/'+idCourse).on('value',function(snap){
     currentCourse = snap.val(); 
+    console.log("se disparó value de readCourse");
    });  
 }
 
@@ -120,15 +149,9 @@ function readUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
     currentUser = snap.val(); 
     myIdCourses = currentUser.inscriptos.names;
-
+    console.log("se disparó value de readUser");
     readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
    });  
-}
-
-function generateNewId(){
-    //cloud function. El servidor tiene que generar los id para que sean unicos y no se pisen
-    //entre multiples usuarios
-    return Math.ceil(Math.random()*1000000);
 }
 
 //listeners entre base de datos.  

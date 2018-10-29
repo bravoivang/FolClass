@@ -95,6 +95,7 @@ function perTakeData () {
     };
     var pathUid = "usuarios/"+currentUser.uid;
     update(pathUid,dataJSON);
+    return dataJSON;
 }
 
 
@@ -136,7 +137,7 @@ function couTakeData (){
     var pathUid = "cursos/"+currentCourse.meta.uid;
     storage(pathUid+'/data',dataJSON.data);
     storage(pathUid+"/objetivos/inscriptos/names" , dataJSON.objetivos.inscriptos.names);
-    update('usuarios/'+currentUser.uid+'/inscriptos/names/',{[currentCourse.meta.uid]: dataJSON.name}); //ECMA6
+    update('usuarios/'+currentUser.uid+'/inscriptos/names/',{[currentCourse.meta.uid]: currentCourse.meta.uid}); //ECMA6 //el value es igual al key
 }
 
 function stuTakeData (){
@@ -159,7 +160,7 @@ function stuTakeData (){
         },
     };
 
-    
+
     var pathUid = "cursos/"+currentCourse.meta.uid;
     update(pathUid+'/data',dataJSON.data);
     update(pathUid+"/objetivos/inscriptos/names" , dataJSON.objetivos.inscriptos.names);
