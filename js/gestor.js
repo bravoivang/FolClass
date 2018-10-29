@@ -98,6 +98,41 @@ function perTakeData () {
     return dataJSON;
 }
 
+//para UPDATEAR curso
+$$(document).on('page:init', '.page[data-name="mod-course"]', function () {
+    var formData = {
+        'certificacion': currentCourse.data.certificacion,
+        'cupo': currentCourse.data.curpo,
+        'tematica': currentCourse.data.tematica,
+        'name': currentCourse.data.name,
+        'abono': currentCourse.data.abono,
+        'listadoAlumnos': {juan:"juan"},
+        'listadoObjetivos': {css:"css"},
+        };
+    app.form.fillFromData('#my-form', formData);
+    $$('.convert-form-to-data').on('click', function(){
+        var formData = app.form.convertToData('#my-form');
+        formData.listadoAlumnos = {};
+        formData.listadoObjetivos = {css:"css",html:"html",js:"js",f7:"f7",};
+        console.log(formData);
+        var alumnos = formData.listadoAlumnos;
+        var data = {
+            certificacion: formData.certificacion,
+            cupo : formData.cupo,
+            tematica : formData.tematica,
+            name : formData.name,
+            abono : formData.abono,
+        };
+        var objetivos = formData.listadoObjetivos;
+        var idCurso = currentCourse.meta.uid;
+
+        updateAtributeCourse(idCurso, '/alumnos/inscriptos/names', alumnos);
+        updateAtributeCourse(idCurso, '/data', data);
+        updateAtributeCourse(idCurso, '/objetivos/inscriptos/names', objetivos);
+        
+    }); 
+  
+});
 
 function couTakeData (){
     var dataJSON = {};
@@ -167,20 +202,4 @@ function stuTakeData (){
     update('usuarios/'+currentUser.uid+'/inscriptos/names/',{[currentCourse.meta.uid]: dataJSON.name}); //ECMA6
 }
 
-$$(document).on('page:init', '.page[data-name="mod-course"]', function () {
-    $$('.convert-form-to-data').on('click', function(){
-        var formData = app.form.convertToData('#my-form');
-        console.log((JSON.stringify(formData)));
-        console.log(formData);
-    });
-    
-    $$('.fill-form-from-data').on('click', function(){
-        var formData = {
-        'name': 'John',
-        'email': 'john@doe.com',
-        'gender': 'female',
-        'toggle': ['yes'],
-        }
-        app.form.fillFromData('#my-form', formData);
-    });
-});
+
