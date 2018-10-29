@@ -9,17 +9,24 @@ auth.setPersistence(persistence);
 var currentUser = {}; //info completa de user =>currentUser.user.uid = uid
 var currentCourse = {}; //info completa del course actual currentCourse.metas / alumnos / etc
 var myIdCourses = [];// = []; ? tiene que ser dinamica y se esta cargando solo en el preload
-
-
+var flag = true; // parche momentaneo
+var creador; 
 auth.onAuthStateChanged(function(user) {
-    if (user) {
+    if (user && flag) { 
         retrieveUserInformation(user);
         console.log(user.email+" is signed in. by AuthState");
         mainView.router.navigate('/');
     }
     else {
-        mainView.router.navigate('/access-screen/');
-        console.log("no estas logeado. by AuthState");
+        if (!flag){ //parche momentaneo
+            singOut();
+            login(creador);
+            console.log("flag sistem");
+        }
+        else{
+            mainView.router.navigate('/access-screen/');
+            console.log("no estas logeado. by AuthState");
+        }
     }
 });
 

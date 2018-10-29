@@ -122,20 +122,21 @@ function createStudent (dataObj) {
     dataObj.password ='Folclass1234';
     dataObj.repassword = dataObj.password;
     //parche momentaneo. Register fuerza a cambiar la seción, por lo que dispara auth.onUserStateChange()
-    var creador = currentUser;
+    creador = currentUser;
+    flag = false;
     register(dataObj);
-    singOut();
-    login(creador);
-
 
 }
 
-function updateAtributeStudent () {
+function updateAtributeStudent (uidStudent, atribute, dataObj) {
+    //atribute format : ['usuarios/uid/ids/] => 'administrativo/.../'
+    var path = 'usuarios/'+uidStudent+'ids'+atribute;
+    update (path, dataObj);
 
 }
 
 function retrieveUserInformation(user){
-    readUser(user.uid); // OBJETO USUARIO
+    readCurrentUser(user.uid); // OBJETO USUARIO
 }
 
 function readCourse (idCourse){ //lee el curso actual
@@ -145,13 +146,19 @@ function readCourse (idCourse){ //lee el curso actual
    });  
 }
 
-function readUser (uid){ //lee el curso actual
+function readCurrentUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
     currentUser = snap.val(); 
     myIdCourses = currentUser.inscriptos.names;
     console.log("se disparó value de readUser");
     readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
    });  
+}
+
+function readUser (uid){  //lee cualquier usuario
+    fbdb.ref('usuarios/'+uid).on('value',function(snap){
+        rndUser = snap.val(); 
+    });
 }
 
 //listeners entre base de datos.  

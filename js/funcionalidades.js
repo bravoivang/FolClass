@@ -24,8 +24,9 @@ var app  = new Framework7({
       app.dialog.alert('Hello World!');
     },
     pushError: function (error){
-      app.lastError.push(error);
-      console.log("error disponible en app.lastError");
+      //app["lastError"].push(error);
+      //console.log("error disponible en app.lastError"); 
+      console.log(error);
     }
   },
   // App routes
@@ -57,39 +58,6 @@ function nonan(panel){
 panelLeft.on('open', nonan)
 ////
 */
-
-
-//contenido viene de BD
-{
-  var entorno = true;
-  var contenidoAlumnos = {
-    
-    alumnos: ["1111","2222","3333","4444","5555","6666","7777","1111","2222","3333","4444","5555","6666","6666","7777"],
-    cantidadTotal: "7",
-    asissAlumn1: "5",//ej para alumno 1
-  
-  }
-  var contenidoCursos = {
-    
-    cursos: ["curso1","curso2","curso3","curso4","curso5"],
-    cantidadTotal: "5",
-  }
-  
-  var contenidoDashboard = {
-    
-    totalAlumnos: contenidoAlumnos.cantidadTotal,
-    totalPagos: "$15000",
-    statusMilestone: "3/5",
-  
-    feed: {
-      js: false,
-      html: true,
-      css: true,
-    },
-    asistencias: contenidoAlumnos.asissAlumn1,
-  
-  }
-  }
 
 panelLeft.on('open', function (panel) {
   console.log("panel open con eventos para objetos instanciados");
