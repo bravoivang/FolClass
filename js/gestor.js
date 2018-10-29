@@ -166,3 +166,21 @@ function stuTakeData (){
     update(pathUid+"/objetivos/inscriptos/names" , dataJSON.objetivos.inscriptos.names);
     update('usuarios/'+currentUser.uid+'/inscriptos/names/',{[currentCourse.meta.uid]: dataJSON.name}); //ECMA6
 }
+
+$$(document).on('page:init', '.page[data-name="mod-course"]', function () {
+    $$('.convert-form-to-data').on('click', function(){
+        var formData = app.form.convertToData('#my-form');
+        console.log((JSON.stringify(formData)));
+        console.log(formData);
+    });
+    
+    $$('.fill-form-from-data').on('click', function(){
+        var formData = {
+        'name': 'John',
+        'email': 'john@doe.com',
+        'gender': 'female',
+        'toggle': ['yes'],
+        }
+        app.form.fillFromData('#my-form', formData);
+    });
+});

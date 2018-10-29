@@ -1,0 +1,84 @@
+<div class="page" data-name="mod-course">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+            <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons ios-only">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+            </a>
+            </div>
+                <div class="title sliding">Cursos</div>
+                <div class="right"></div>
+                <div class="subnavbar">
+            </div>
+        </div>
+    </div>
+                    
+    <div class="page-content">
+        <form class="list" id="my-form">
+            <ul>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                        <div class="item-title item-label">Nombre del curso</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="name" placeholder="Curso Max 2000">
+                        </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                        <div class="item-title item-label">Temática</div>
+                        <div class="item-input-wrap">
+                            <input type="email" name="tematica" placeholder="Robots">
+                        </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                        <div class="item-title item-label">Abono</div>
+                        <div class="item-input-wrap">
+                            <select name="abono">
+                            <option value="gratuito" selected>Gratuito</option>
+                            <option value="arancelado">Arancelado</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                        <div class="item-title">Certificación</div>
+                        <div class="item-after">
+                            <label class="toggle toggle-init">
+                            <input type="checkbox" name="certificacion" value="yes"><i class="toggle-icon"></i>
+                            </label>
+                        </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">Cupo</div>
+                            <div class="item-input-wrap">
+                            <div class="range-slider range-slider-init" data-label="true">
+                                <input type="range" value="0" min="0" max="50" step="1" name="cupo">
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </form>
+        <div class="block block-strong row">
+            <div class="col"><a class="button convert-form-to-data" href="#">Get Data</a></div>
+            <div class="col"><a class="button fill-form-from-data" href="#">Fill Form</a></div>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,7 @@ auth.onAuthStateChanged(function(user) {
             singOut();
             login(creador);
             console.log("flag sistem");
+            flag = true;
         }
         else{
             mainView.router.navigate('/access-screen/');
