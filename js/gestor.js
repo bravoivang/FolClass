@@ -258,3 +258,5 @@ panelLeft.once('open', function (panel) {
         itemsAcordeonPanelLeft.append(currentA);
     }
 });
+
+

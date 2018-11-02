@@ -1,7 +1,13 @@
 routes = [
     {
+      name: "home",
       path: '/',
       url: './index.html',
+      on: {
+        pageBeforeIn: function (event, page) {
+            $$('#navbar-home-currentCourse').text(currentCourse.data["nombre"]);       
+        },
+      },
     },
     
     {
@@ -14,8 +20,14 @@ routes = [
       url: './pages/about.html',
     },
     {
+      name: 'objetivos',
       path: '/objetivos/',
       url: './pages/objetivos.html',
+      on: {
+        pageBeforeIn: function (event, page) {
+            $$('#navbar-objetivos-currentCourse').text(currentCourse.data["nombre"]);       
+        },
+      },
     },
     {
       path: '/cursos/',
@@ -30,8 +42,14 @@ routes = [
       url: './pages/mod-course.html',
     },
     {
+      name: 'alumnos',
       path: '/alumnos/',
       url: './pages/alumnos.html',
+      on: {
+        pageBeforeIn: function (event, page) {
+            $$('#navbar-alumnos-currentCourse').text(currentCourse.data["nombre"]);       
+        },
+      },
     },
     {
       path: '/add-student/',
