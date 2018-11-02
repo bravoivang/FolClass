@@ -3,6 +3,9 @@
 
 const fbdb = firebase.database();
 const ROOTref = firebase.database().ref();
+const defaultCourse = getStandarCourse();
+const defaultUser = getStandarUser();
+
 /*
 var resultPreload;
  auth.onAuthStateChanged(function(user) <= ya esta trayendo al user inicialmente, ESTE ES EL PRELOAD
@@ -219,13 +222,12 @@ function readCourse (idCourse){ //lee el curso actual
 
 function readCurrentUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
-    currentUser = snap.val();
-    for (var key in currentUser.cursos){
-        if (key == "cantidad"){} 
-        else {
-            nombresCursosDisponibles.push(currentUser.cursos[`${key}`].meta['nombreDelCurso']);
-            idCursosDisponibles.push(currentUser.cursos[`${key}`].meta['idDelCurso']);
-        }
+        currentUser = snap.val();
+        for (var key in currentUser.cursos){
+            if (key != "cantidad"){
+                nombresCursosDisponibles.push(currentUser.cursos[`${key}`].meta['nombreDelCurso']);
+                idCursosDisponibles.push(currentUser.cursos[`${key}`].meta['idDelCurso']);
+            } 
     }
     console.log("se disparó value de readUser");
     })/*.then(function(){

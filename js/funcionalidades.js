@@ -69,6 +69,12 @@ var app  = new Framework7({
       },
     };
   },
+  on: {
+    init: function () {
+      currentUser= defaultUser;
+      currentCourse= defaultCourse;
+    },
+  },
   // App root methods
   methods: {
     helloWorld: function () {
@@ -80,6 +86,7 @@ var app  = new Framework7({
       console.log(error);
     }
   },
+ 
   // App routes
   routes: routes,
   // Enable panel left visibility breakpoint
@@ -142,17 +149,19 @@ app.on('click', function () {
 
 $$(document).on('page:init', '.page[data-name="home"]', function (e) {
   
-  cardDrawing (contenidoDashboard,"card-basic");
+  cardDrawing (content,page,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="objetivos"]', function (e) {
   var content = currentCourse.objetivos;
-  cardDrawing (content,"card-basic");
+  var page  = "objetivos";
+  cardDrawing (content,page,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
   var content = currentCourse.alumnos; //la db deberia ser como objetivos. para alumnos tendria que menterme en .alumnos
-  cardDrawing (content,"card-basic");
+  var page  = "alumnos";
+  cardDrawing (content,page,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
@@ -166,7 +175,7 @@ $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
 function cardDrawing (content,page,cssCard) {
   var divNum;
   var rows;
-  var names;
+  var names = [];
   var array = [];
   var objLenght;
 
@@ -176,10 +185,26 @@ function cardDrawing (content,page,cssCard) {
     };
 
     case "objetivos": {
+      for (var key in content){
+        if (key != "cantidad"){
+          names.push(content[key].nombre);
+        }
+      }
+      divNum = 4;
+      rows = Math.ceil(content['cantidad'] / divNum);
+      objLenght = getObjLength(names);
       break;
     };
 
     case "alumnos": {
+      for (var key in content){
+        if (key != "cantidad"){
+          names.push(content[key].nombre);
+        }
+      }
+      divNum = 4;
+      rows = Math.ceil(content['cantidad'] / divNum);
+      objLenght = getObjLength(names);
       break;
     };
 
@@ -191,6 +216,13 @@ function cardDrawing (content,page,cssCard) {
       break;
     };
 
+    case "default":{
+      divNum = 1;
+      rows = Math.ceil(content.cursos['cantidad'] / divNum);
+      names = datosDefault;
+      objLenght = getObjLength(names);
+      break;
+    }
   }
 
   for (var key in names){
