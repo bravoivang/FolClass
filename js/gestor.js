@@ -243,15 +243,18 @@ function stuTakeData (){
 
 
 panelLeft.once('open', function (panel) {
-    var largo = nombresCursosDisponibles;
+    var vecId = idCursosDisponibles;
+    var vecNombres = nombresCursosDisponibles;
     console.log("abierto desde gestor");
     var itemsAcordeonPanelLeft = $$('#acordionCursosList');
-    for(var i = 0; i<largo.length; i++){
-        var nombreCurso = largo[i];
+    for(var i = 0; i<vecNombres.length; i++){
+        var nombreCurso = vecNombres[i];
+        var idCurso = vecId[i];
         var currentA = $$('<a>');
         currentA.addClass("button panel-close");
         currentA.text(nombreCurso);
         currentA.attr('href', '/cursos/');
+        currentA.attr('onclick', `readCourse('${idCurso}')`);
         itemsAcordeonPanelLeft.append(currentA);
     }
 });

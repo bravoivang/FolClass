@@ -224,6 +224,7 @@ function readCurrentUser (uid){ //lee el curso actual
         if (key == "cantidad"){} 
         else {
             nombresCursosDisponibles.push(currentUser.cursos[`${key}`].meta['nombreDelCurso']);
+            idCursosDisponibles.push(currentUser.cursos[`${key}`].meta['idDelCurso']);
         }
     }
     console.log("se disparó value de readUser");

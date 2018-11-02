@@ -10,6 +10,7 @@ var currentUser = {}; //info completa de user =>currentUser.user.uid = uid
 var currentCourse = {}; //info completa del course actual currentCourse.metas / alumnos / etc
 
 var nombresCursosDisponibles = [];
+var idCursosDisponibles = [];
 
 
 var flag = true; // parche momentaneo
