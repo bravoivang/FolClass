@@ -217,10 +217,7 @@ function cardDrawing (content,page,cssCard) {
     };
 
     case "default":{
-      divNum = 1;
-      rows = Math.ceil(content.cursos['cantidad'] / divNum);
-      names = datosDefault;
-      objLenght = getObjLength(names);
+      //null case
       break;
     }
   }

@@ -68,6 +68,7 @@ function getStandarCourse (){
                 abono: "pago-gratuito",
             },       
             objetivos: {
+                cantidad : 1,
                 idGeneradoPorPush: {
                     nombre: "nombre del objetivo",
                     descripcion: "descripcion del objetivo",
@@ -75,6 +76,7 @@ function getStandarCourse (){
                 },
             },
             alumnos: {
+                cantidad : 1,
                 idGeneradoPorPush: {
                     nombre: "nombre del alumno",
                     apellido: "apellido del alumno",

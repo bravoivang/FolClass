@@ -8,6 +8,11 @@ routes = [
             $$('#navbar-home-currentCourse').text(currentCourse.data["nombre"]);       
         },
       },
+      once : {
+        pageInit: function (event, page) {
+          $$('#navbar-home-currentCourse').text(currentCourse.data["nombre"]);       
+      },
+      }
     },
     
     {
