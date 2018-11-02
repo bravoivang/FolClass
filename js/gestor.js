@@ -45,9 +45,9 @@ function accGoLog (accObj){
         accRest(accObj);
     });
     accObj.el_accButtonGo.on('click',() =>{
-        var data = accTakeData();
-        login (data);
-        console.log("User: "+data.email+"Password: "+data.password);
+        var dataJSON = accTakeData();
+        login (dataJSON);
+        console.log("User: "+dataJSON.data.email+"Password: "+dataJSON.data.password);
     });
 
 }
@@ -62,23 +62,19 @@ function accGoReg (accObj){
         accRest(accObj);
     });
     accObj.el_accButtonGo.on('click', function () {
-        var data = accTakeData();
-        register (data);
-        console.log("User: "+data.email+ "Password: "+data.password + "Repass: "+ data.repassword +" Nick: "+data.nick);
+        var dataJSON = accTakeData();
+        register (dataJSON);
+        console.log("User: "+dataJSON.data.email+ "Password: "+dataJSON.data.password + "Repass: "+ dataJSON.data.repassword +" Nick: "+dataJSON.data.nick);
     });
 }
 
 function accTakeData (){
-    var currentData = {};
-    currentData.email = $$('#acc-email').val(); 
-    currentData.password = $$('#acc-password').val();
-    currentData.nick = $$('#acc-nick').val();
-    currentData.repassword = $$('#acc-repassword').val();
-    currentData.date = "";
-    currentData.toggle = "";
-    currentData.slider = "";
-    currentData.checkbox = "";
-    return currentData;
+    var dataJSON = getStandarUser();
+    dataJSON.data.email = $$('#acc-email').val(); 
+    dataJSON.data.password = $$('#acc-password').val();
+    dataJSON.data.nick = $$('#acc-nick').val();
+    dataJSON.data.repassword = $$('#acc-repassword').val();
+    return dataJSON;
 }
 
 function perTakeData () { 
@@ -100,22 +96,22 @@ function perTakeData () {
 
 //para UPDATEAR curso
 $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
-    var formData = {
-        'certificacion': currentCourse.data.certificacion,
-        'cupo': currentCourse.data.curpo,
-        'tematica': currentCourse.data.tematica,
-        'name': currentCourse.data.name,
-        'abono': currentCourse.data.abono,
-        'listadoAlumnos': {juan:"juan"},
-        'listadoObjetivos': {css:"css"},
+   /* fbdb.ref().once('child_added',function(snap){
+        var formData = {
+            'certificacion': currentCourse.data.certificacion,
+            'cupo': currentCourse.data.curpo,
+            'tematica': currentCourse.data.tematica,
+            'name': currentCourse.data.name,
+            'abono': currentCourse.data.abono,
+            'listadoAlumnos': {juan:"juan"},
+            'listadoObjetivos': {css:"css"},
         };
-    app.form.fillFromData('#my-form', formData);
+    })
+    
+    app.form.fillFromData('#my-form', formData);*/
     $$('.convert-form-to-data').on('click', function(){
         var formData = app.form.convertToData('#my-form');
-        formData.listadoAlumnos = {};
-        formData.listadoObjetivos = {css:"css",html:"html",js:"js",f7:"f7",};
         console.log(formData);
-        var alumnos = formData.listadoAlumnos;
         var data = {
             certificacion: formData.certificacion,
             cupo : formData.cupo,
@@ -123,15 +119,58 @@ $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
             name : formData.name,
             abono : formData.abono,
         };
-        var objetivos = formData.listadoObjetivos;
-        var idCurso = currentCourse.meta.uid;
 
         updateAtributeCourse(idCurso, '/alumnos/inscriptos/names', alumnos);
         updateAtributeCourse(idCurso, '/data', data);
         updateAtributeCourse(idCurso, '/objetivos/inscriptos/names', objetivos);
         
     }); 
-  
+});
+
+//para CREAR curso
+$$(document).on('page:init', '.page[data-name="add-course"]', function () {
+   
+    $$('.convert-form-to-data').on('click', function(){
+        var formData = app.form.convertToData('#my-form');
+        console.log(formData);
+        var curso = getStandarCourse();
+        curso.data = {
+            certificacion: formData.certificacion,
+            cupo : formData.cupo,
+            tematica : formData.tematica,
+            name : formData.name,
+            abono : formData.abono,
+        };
+        createCourse(curso);        
+    }); 
+});
+var pickerInline;
+//para CREAR Alumno
+$$(document).on('page:init', '.page[data-name="add-student"]', function () {
+
+    $$('.convert-form-to-data').on('click', function(){
+        var formData = app.form.convertToData('#my-form');
+        formData.listadoAlumnos = {juan:"juan"};
+        formData.listadoObjetivos = {css:"css",html:"html",js:"js",f7:"f7",};
+        console.log(formData);
+       /* var curso = getStandarCourse();
+        curso.alumnos.inscriptos.names = formData.listadoAlumnos;
+        curso.data = {
+            certificacion: formData.certificacion,
+            cupo : formData.cupo,
+            tematica : formData.tematica,
+            name : formData.name,
+            abono : formData.abono,
+        };
+        curso.objetivos.inscriptos.names = formData.listadoObjetivos;
+        createCourse(curso);   */     
+    }); 
+    $$('#date').on('click', function() {
+        
+        pickerInline = app.picker.create(app.picker);
+    
+});
+
 });
 
 function couTakeData (){
@@ -203,3 +242,16 @@ function stuTakeData (){
 }
 
 
+panelLeft.once('open', function (panel) {
+    var largo = nombresCursosDisponibles;
+    console.log("abierto desde gestor");
+    var itemsAcordeonPanelLeft = $$('#acordionCursosList');
+    for(var i = 0; i<largo.length; i++){
+        var nombreCurso = largo[i];
+        var currentA = $$('<a>');
+        currentA.addClass("button panel-close");
+        currentA.text(nombreCurso);
+        currentA.attr('href', '/cursos/');
+        itemsAcordeonPanelLeft.append(currentA);
+    }
+});

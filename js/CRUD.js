@@ -43,7 +43,6 @@ var myInterval = setInterval(function(){
 
 function storage (path, obj) {
     fbdb.ref(path).set(obj);
-
 }
 
 function update (pathUid, valuesChanged) {
@@ -56,60 +55,130 @@ function remove (path){
     });
 }
 
-function createStructCourse (){ //funcion interna
-    var dataJSON = {};
-    dataJSON = {
-        data : {
-            name: "",
-            tematica: "",
-            certificacion: "",
-            cupo: "",
-        },
+function getStandarCourse (){
+    var dataJSON = {
+            data : {
+                nombre: "nombre del curso",
+                tematica: "tematica del curso",
+                certificacion: "true-false",
+                cupo: "cantidad de alumnos",
+                abono: "pago-gratuito",
+            },       
+            objetivos: {
+                idGeneradoPorPush: {
+                    nombre: "nombre del objetivo",
+                    descripcion: "descripcion del objetivo",
+                    idDelUsuario: "uid generado por Auth()"
+                },
+            },
+            alumnos: {
+                idGeneradoPorPush: {
+                    nombre: "nombre del alumno",
+                    apellido: "apellido del alumno",
+                    idDelUsuario: "uid generado por Auth()",
+                }
+            },
+            meta: {
+                uidDelCurso : "id generado por push",
+            },
+        };
+    return dataJSON;
         
-        objetivos: {
-            inscriptos: {
-                meta: {
-                    cantidad : "",
-                },
-                names: {
-                    1: "",
-                }
-            }
-        },
-        alumnos: {
-            inscriptos: {
-                meta: {
-                    cantidad : "",
-                },
-                names: {
-                    1: "",
-                }
-            }
-        },
-        meta: {
-            uid : currentCourse.meta.uid,
-        }
-    };
-    var pathUid = "cursos/"+currentCourse.meta.uid;
-    storage(pathUid,dataJSON);
+    // var nuevoObjetivo = {nombre:"Tema1",descripcion:"Estudien mucho"};
+    // dataJSON["objetivo1"]
+    // dataJSON.objetivos.push(nuevoObjetivo);
 }
 
-/*
-function observadorGeneral (){
-fbdb.ref('usuarios/').on('value',function(){console.log("algo cambió!");});}*/
 
-function generateNewId(){
-    //cloud function. El servidor tiene que generar los id para que sean unicos y no se pisen
-    //entre multiples usuarios
-    return Math.ceil(Math.random()*1000000);
+function getStandarUser (){
+    var dataJSON = {
+            data : {
+                nombre: "nombre del usuario",
+                apellido: "apellido del curso",
+                DNI: "37847898",
+                localidad: "Haedo",
+                Nacionalidad: "Argentino",
+                email: "email del usuario",
+                nick: "nick del usuario",
+                repassword: "confirmacion contraseña",
+                password: "contraseña",
+            },       
+            cursos: {
+                idGeneradoPorPush: {
+                    meta:{
+                        nombre: "nombre del curso al que esta inscripto",
+                        idDelCurso: "idGeneradoPorPush",
+                        apellido: "apellido del alumno en el curso que esta inscripto",
+                    },
+                    administrativo : {
+                            asistencias : "numero de asistencias",
+                            calificacion : "calificacion del alumno",
+                            regularidad : "true-false",
+                    },
+                    desempeno : {
+                        objetivos : {
+                            idGeneradoPorPush: {
+                                nombre: "nombre del objetivo",
+                                puntaje: "puntaje del alumno en este objetivo",
+                            },
+                        },
+                        participacion : {
+                            colaboracion : "comentario agergado por la profesora",
+                        },
+                    },
+                },
+            },
+            meta: {
+                uidDelUsuario : "id generado por Auth",
+            },
+        };
+    return dataJSON;
 }
 
-function createCourse (dataObj){
-    var idNewAvaileble = generateNewId();
-    var newCourseData =dataObj;//= datos del gestor. formulario de la pagina actual
-    var path = 'cursos/'+idNewAvaileble;
+function createStructUser (){ //funcion interna   
+    var refNuevoUsuario = fbdb.ref('usuarios/').push();
+    var newUserData = getStandarUser();
+    newUserData.meta[`uidDelCurso`] = refNuevoUsuario.key;
+    refNuevoUsuario.set(newUserData)
+    .then(function(){
+        console.log("se logró crear usuario vacio");
+    })
+    .catch(function(error){
+        console.log("no se pudo crear usuario vacio: ",error);
+    });
+}
+
+function createStructCourse (){ //funcion interna
+    var refNuevoCurso = fbdb.ref('cursos/').push();
+    var newCourseData = getStandarCourse();
+    newCourseData.meta[`uidDelCurso`] = refNuevoCurso.key;
+    refNuevoCurso.set(newCourseData)
+    .then(function(){
+        console.log("se logró crear cursos vacio");
+    })
+    .catch(function(error){
+        console.log("no se pudo crear cursos vacio: ",error);
+    });
+}
+
+function createCourse (dataJSON){
+    //var xhr = new XMLHttpRequest().send('GET',"https://us-central1-bravofolclass.cloudfunctions.net/IdCuoursesGenerator")
+    //xhr.open('GET', true);
+    //var idNewAvaileble = xhr;
+    var refNuevoCurso = fbdb.ref('cursos/').push();
+    var newCourseData = dataJSON;//= datos del gestor. formulario de la pagina actual
+    newCourseData.meta[`uidDelCurso`] = refNuevoCurso.key;
+    refNuevoCurso.set(newCourseData)
+    .then(function(){
+        console.log("se logró crear curso");
+    })
+    .catch(function(error){
+        console.log("no se pudo crear curso: ",error);
+    });
+    //console.log(idNewAvaileble,newCourseData.meta.uid);
+    //var path = 'cursos/'+idNewAvaileble;
     //idCourses.push(idNewAvaileble); update "metadata de cursos" cloudFunction tiene que actualizar lenght de cursos
-    storage(path, newCourseData);
+    //storage(path, newCourseData);
 }
 
 function updateAtributeCourse (idCurso, atribute, dataObj){  //cambia un atributo a la vez
@@ -117,6 +186,8 @@ function updateAtributeCourse (idCurso, atribute, dataObj){  //cambia un atribut
     var path = 'cursos/'+idCurso+atribute;
     update (path, dataObj);
 }
+
+
 
 function createStudent (dataObj) {
     dataObj.password ='Folclass1234';
@@ -148,11 +219,19 @@ function readCourse (idCourse){ //lee el curso actual
 
 function readCurrentUser (uid){ //lee el curso actual
     fbdb.ref('usuarios/'+uid).on('value',function(snap){
-    currentUser = snap.val(); 
-    myIdCourses = currentUser.inscriptos.names;
+    currentUser = snap.val();
+    for (var key in currentUser.cursos){
+        if (key == "cantidad"){} 
+        else {
+            nombresCursosDisponibles.push(currentUser.cursos[`${key}`].meta['nombreDelCurso']);
+        }
+    }
     console.log("se disparó value de readUser");
-    readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
-   });  
+    })/*.then(function(){
+        readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
+   },function(error){
+       console.log("no se pudo leer el usuario");
+   })*/;  
 }
 
 function readUser (uid){  //lee cualquier usuario

@@ -1,8 +1,59 @@
 // Dom7
 var $$ = Dom7;
-
+var today = new Date();
 // Framework7 App main instance
 var app  = new Framework7({
+  
+  picker: {
+    
+    containerEl: '#demo-picker-date-container',
+    openIn : 'popover',
+    closeByOutsideClick: true,
+    inputEl: '#demo-picker-date',
+    toolbar: false,
+    rotateEffect: true,
+    value: [
+        today.getMonth(),
+        today.getDate(),
+        today.getFullYear(),
+    ],
+    formatValue: function (values, displayValues) {
+        return displayValues[0] + ' ' + values[1] + ', ' + values[2] + ' ' + values[3] + ':' + values[4];
+    },
+    cols: [
+        // Days
+        {
+        values: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+        },
+        // Months
+        {
+        values: ('0 1 2 3 4 5 6 7 8 9 10 11').split(' '),
+        displayValues: ('January February March April May June July August September October November December').split(' '),
+        textAlign: 'left'
+        },
+        // Years
+        {
+        values: (function () {
+            var arr = [];
+            for (var i = 1950; i <= 2030; i++) { arr.push(i); }
+            return arr;
+        })(),
+        },
+        // Space divider
+        {
+        divider: true,
+        content: '&nbsp;&nbsp;'
+        },
+    ],
+    on: {
+        change: function (picker, values, displayValues) {
+        var daysInMonth = new Date(picker.value[2], picker.value[0]*1 + 1, 0).getDate();
+        if (values[1] > daysInMonth) {
+            picker.cols[1].setValue(daysInMonth);
+        }
+        },
+    },
+  },
   swipe: 'left',
   pushState: true,
   root: '#app', // App root element
@@ -58,15 +109,16 @@ function nonan(panel){
 panelLeft.on('open', nonan)
 ////
 */
-
+/*
 panelLeft.on('open', function (panel) {
   console.log("panel open con eventos para objetos instanciados");
  
  /* console.log("on devuelve para el callback 'panel' que es el objeto instanciado, por lo que se lo puede manipular");
   setTimeout(function () {
     panel.close(true);
-  },3000);*/
+  },3000);
 });
+*/
 panelLeft.on('close', function () {
   console.log("panel cerrado <==");
 });
@@ -105,20 +157,44 @@ $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
   var content = currentUser; //idem para ver los id cursos tendria que menterme en .alumnos
-  cardDrawing (content,"card-basic");
+  var page  = "cursos";
+  cardDrawing (content,page,"card-basic");
 });
 
 
 //se encarga de dibujar los slot de cards con sus respectivas rows según inscriptos en la DB
-function cardDrawing (content,cssCard) {
-  var divNum = 4;
-  var rows = Math.ceil(content.inscriptos.meta.cantidad / divNum);
-  var names = content.inscriptos.names;
+function cardDrawing (content,page,cssCard) {
+  var divNum;
+  var rows;
+  var names;
   var array = [];
-  var objLenght = getObjLength(names);
+  var objLenght;
+
+  switch (page){
+    case "dashboard": {
+      break;
+    };
+
+    case "objetivos": {
+      break;
+    };
+
+    case "alumnos": {
+      break;
+    };
+
+    case "cursos": {
+      divNum = 4;
+      rows = Math.ceil(content.cursos['cantidad'] / divNum);
+      names = nombresCursosDisponibles;
+      objLenght = getObjLength(names);
+      break;
+    };
+
+  }
+
   for (var key in names){
     array.push(names[key]);
-    console.log(names[key]);
   }
   var cardZone = $$('.cardZone'); 
   var aux = 0;

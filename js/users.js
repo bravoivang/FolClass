@@ -8,7 +8,10 @@ auth.setPersistence(persistence);
 
 var currentUser = {}; //info completa de user =>currentUser.user.uid = uid
 var currentCourse = {}; //info completa del course actual currentCourse.metas / alumnos / etc
-var myIdCourses = [];// = []; ? tiene que ser dinamica y se esta cargando solo en el preload
+
+var nombresCursosDisponibles = [];
+
+
 var flag = true; // parche momentaneo
 var creador; 
 auth.onAuthStateChanged(function(user) {
@@ -31,15 +34,15 @@ auth.onAuthStateChanged(function(user) {
     }
 });
 
-function register (data) {
-    if (data.password === data.repassword)
+function register (dataJSON) {
+    if (dataJSON.data.password === dataJSON.data.repassword)
     {
-        auth.createUserWithEmailAndPassword(data.email, data.password)
+        auth.createUserWithEmailAndPassword(dataJSON.data.email, dataJSON.data.password)
         .catch(function(error) {
             app.methods.pushError(error);
         })
         .then(function(result){
-            storage("usuarios/"+result.user.uid,data);
+            storage("usuarios/"+result.user.uid,dataJSON);
         });
     }
     else{
@@ -47,8 +50,8 @@ function register (data) {
     }
 }
 
-function login (data) {
-    auth.signInWithEmailAndPassword(data.email, data.password)
+function login (dataJSON) {
+    auth.signInWithEmailAndPassword(dataJSON.data.email, dataJSON.data.password)
         .catch(function(error) {
             app.methods.pushError(error);
             if (error.code === 'auth/wrong-password') {

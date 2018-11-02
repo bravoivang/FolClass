@@ -1,105 +1,78 @@
 <div class="page" data-name="add-student">
-        <div class="navbar">
-          <div class="navbar-inner sliding">
+    <div class="navbar">
+        <div class="navbar-inner">
             <div class="left">
-              <a href="#" class="link back">
-                <i class="icon icon-back"></i>
-                <span class="ios-only">Back</span>
-              </a>
+            <a href="#" class="link icon-only panel-open" data-panel="left">
+                <i class="icon f7-icons ios-only">menu</i>
+                <i class="icon material-icons md-only">menu</i>
+            </a>
             </div>
-            <div class="title">add-student</div>
-          </div>
+                <div class="title sliding">Añadir Alumno</div>
+                <div class="right"></div>
+                <div class="subnavbar">
+            </div>
         </div>
-        <div class="page-content">
-          <div class="block-title">Nuevo curso</div>
-          <div class="list no-hairlines-md">
+    </div>
+                    
+    <div class="page-content">
+        <form class="list" id="my-form">
             <ul>
-              <li>
-                <div class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Nombre</div>
-                    <div class="item-input-wrap">
-                      <input type="text" placeholder="p. e. Curso mobile" id="name"/>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                        <div class="item-title item-label">Nombre</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="name" placeholder="Juan">
+                        </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Apellido</div>
-                    <div class="item-input-wrap">
-                      <input type="text" placeholder="p.e. mobile" id="tematica"/>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content">
-                  <div class="item-inner">
-                    <div class="item-title">Blanco</div>
-                    <div class="item-after">
-                      <label class="toggle toggle-init">
-                        <input type="checkbox" id="certificacion">
-                        <span class="toggle-icon"></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Edad</div>
-                    <div class="item-input-wrap">
-                      <div class="range-slider range-slider-init" data-label="true">
-                        <input type="range" value="0" min="0" max="35" step="1" id="cupo">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="block-title">Objetivos</div>
-          <div class="list">
-            <ul>
-              <li>
-                <label class="item-checkbox item-content">
-                  <input type="checkbox" name="checkbox" value="Html" id="html"/>
-                  <i class="icon icon-checkbox"></i>
-                  <div class="item-inner">
-                    <div class="item-title">Html</div>
-                  </div>
-                </label>
-              </li>
-              <li>
-                  <label class="item-checkbox item-content">
-                    <input type="checkbox" name="checkbox" value="Js" id="js"/>
-                    <i class="icon icon-checkbox"></i>
-                    <div class="item-inner">
-                      <div class="item-title">Js</div>
-                    </div>
-                  </label>
                 </li>
                 <li>
-                    <label class="item-checkbox item-content">
-                      <input type="checkbox" name="checkbox" value="Css" id="css"/>
-                      <i class="icon icon-checkbox"></i>
-                      <div class="item-inner">
-                        <div class="item-title">Css</div>
-                      </div>
-                    </label>
-                  </li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                        <div class="item-title item-label">Apellido</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="apellido" placeholder="Perez">
+                        </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Email</div>
+                        <div class="item-input-wrap">
+                        <input type="email" name="email" placeholder="Your email">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-title item-label" id="date">Fecha de nacimiento</div>
+                        <div class="item-inner">
+                            <div class="item-input-wrap">
+                                <input type="text" placeholder="Date Time" name="date" readonly="readonly" id="demo-picker-date"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block block-strong no-padding no-margin margin-bottom">
+                        <div id="demo-picker-date-container"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                        <div class="item-title item-label">Dirección</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="direccion" placeholder="Moron City">
+                        </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
-          </div>
-          <div class="block-title">Buttons</div>
-          <div class="block block-strong">    
-            <p class="row">
-              <a href="#" class="col button button-raised button-fill" onclick="stuTakeData()">Raised Fill</a>
-            </p>
-          </div>
-          
+        </form>
+        <div class="block block-strong row">
+            <div class="col"><a class="button convert-form-to-data" href="#">Añadir alumno</a></div>
+            <div class="col"><p>al añadir alumno esta creando una cuenta con pass= Folclass1234 por defualt</p></div>
         </div>
-      </div>
-      
+    </div>
+</div>
