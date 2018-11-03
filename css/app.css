@@ -1,8 +1,8 @@
 .row > * {
     background: #fff;
     text-align: center;
-    color: #000;
-    border: 10px solid #ddd;
+    
+    
     padding: 5px;
     margin-bottom: 15px;
     font-size: 12px;
@@ -18,6 +18,9 @@
 }
 
 .card-null{
-  display: none;
+  visibility: hidden !important;
 }
 
+.minCard-obj {
+  min-width: 300px;
+}

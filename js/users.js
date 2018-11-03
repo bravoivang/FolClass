@@ -8,10 +8,14 @@ auth.setPersistence(persistence);
 
 var currentUser = {}; //info completa de user =>currentUser.user.uid = uid
 var currentCourse = {}; //info completa del course actual currentCourse.metas / alumnos / etc
+var hasChosenCourse = false;
 
 var nombresCursosDisponibles = [];
 var idCursosDisponibles = [];
 
+var idsObjetivoPusheadoCursoActual = [];
+var nombresObjetivosCursoActual = [];
+var descripcionesObjetivosCursoActual = [];
 
 var flag = true; // parche momentaneo
 var creador; 

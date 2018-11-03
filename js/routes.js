@@ -45,6 +45,11 @@ routes = [
     {
       path: '/mod-course/',
       url: './pages/mod-course.html',
+      on: {
+        pageBeforeIn: function (event, page) {
+            $$('#navbar-mod-course-currentCourse').text(currentCourse.data["nombre"]);       
+        },
+      },
     },
     {
       name: 'alumnos',

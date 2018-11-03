@@ -89,9 +89,6 @@ function getStandarCourse (){
         };
     return dataJSON;
         
-    // var nuevoObjetivo = {nombre:"Tema1",descripcion:"Estudien mucho"};
-    // dataJSON["objetivo1"]
-    // dataJSON.objetivos.push(nuevoObjetivo);
 }
 
 
@@ -193,7 +190,6 @@ function updateAtributeCourse (idCurso, atribute, dataObj){  //cambia un atribut
 }
 
 
-
 function createStudent (dataObj) {
     dataObj.password ='Folclass1234';
     dataObj.repassword = dataObj.password;
@@ -203,7 +199,7 @@ function createStudent (dataObj) {
     register(dataObj);
 
 }
-
+//ids no puede ser string constante!!! reformular
 function updateAtributeStudent (uidStudent, atribute, dataObj) {
     //atribute format : ['usuarios/uid/ids/] => 'administrativo/.../'
     var path = 'usuarios/'+uidStudent+'ids'+atribute;
@@ -217,9 +213,21 @@ function retrieveUserInformation(user){
 
 function readCourse (idCourse){ //lee el curso actual
     fbdb.ref('cursos/'+idCourse).on('value',function(snap){
-    currentCourse = snap.val(); 
+    currentCourse = snap.val();
+    hasChosenCourse = true;
+    $$('#lefPanel-mod-currentCourse').show();
     console.log("se disparó value de readCourse");
-   });  
+    idsObjetivoPusheadoCursoActual = [];
+    nombresObjetivosCursoActual = [];
+    descripcionesObjetivosCursoActual = [];
+    for (var key in currentCourse.objetivos){
+        if (key != "cantidad"){
+            idsObjetivoPusheadoCursoActual.push(key);
+            nombresObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].nombre);
+            descripcionesObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].descripcion)
+        } 
+    }
+   });
 }
 
 function readCurrentUser (uid){ //lee el curso actual
@@ -230,7 +238,7 @@ function readCurrentUser (uid){ //lee el curso actual
                 nombresCursosDisponibles.push(currentUser.cursos[`${key}`].meta['nombreDelCurso']);
                 idCursosDisponibles.push(currentUser.cursos[`${key}`].meta['idDelCurso']);
             } 
-    }
+        }
     console.log("se disparó value de readUser");
     })/*.then(function(){
         readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
@@ -259,13 +267,5 @@ function getCantidad (path){  //creeria qeu es una cloudFunction
     return cantidad;
 } 
 
-//helper
-function getObjLength (obj){
-	var cont = 0;
-	for (var key in obj){
-		cont++;
-	}
-return cont;
-}
 
 

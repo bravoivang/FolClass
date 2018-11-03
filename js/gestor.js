@@ -94,38 +94,92 @@ function perTakeData () {
     return dataJSON;
 }
 
+function dibujarObjetivos(cantidad){
+    var el = $$('#mod-course-formObjetivos');
+    var currentObjetivo = currentCourse.objetivos;
+    for (var i=0; i<cantidad; i++){
+        var nombre = currentObjetivo[idsObjetivoPusheadoCursoActual[i]].nombre;
+        var descripcion = currentObjetivo[idsObjetivoPusheadoCursoActual[i]].descripcion;
+        var elChild = $$("<div>").attr("class","block-tittle");
+        elChild.text(`${nombre}`);
+        elChild.html(
+            `<ul id="list-formObjetivos${i}">\
+            <li>\
+                <div class="item-content item-input">\
+                    <div class="item-inner">\
+                        <div class="item-title item-label">Nombre del objetivo</div>\
+                        <div class="item-input-wrap">\
+                            <input type="text" name="nombre${i}" placeholder=${nombre}>\
+                        </div>\
+                    </div>\
+                </div>\
+                    <div class="item-content item-input">\
+                        <div class="item-inner">\
+                            <div class="item-title item-label">Descripción</div>\
+                            <div class="item-input-wrap">\
+                                <textarea name="descripcion${i}" placeholder="${descripcion}"></textarea>\
+                            </div>\                       
+                    </div>\
+                </div>\
+
+                <div class="row">        
+                    <!--<div class="col-33"><button class="button button-fill" onclick="actualizarObjetivo(${i})">Actualizar</button></div>-->\
+                    <a href="#" onclick="actualizarObjetivo(${i})">Actualizar</a>
+                </div>\
+            </li>`);
+        el.append(elChild);
+    }
+}
+
 //para UPDATEAR curso
 $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
-   /* fbdb.ref().once('child_added',function(snap){
+    dibujarObjetivos(currentCourse.objetivos.cantidad);
+/*
+    //    fbdb.ref().once('child_added',function(snap){
         var formData = {
             'certificacion': currentCourse.data.certificacion,
             'cupo': currentCourse.data.curpo,
             'tematica': currentCourse.data.tematica,
-            'name': currentCourse.data.name,
+            'nombre': currentCourse.data.nombre,
             'abono': currentCourse.data.abono,
-            'listadoAlumnos': {juan:"juan"},
-            'listadoObjetivos': {css:"css"},
+            // 'listadoAlumnos': {juan:"juan"},
+            // 'listadoObjetivos': {css:"css"},
         };
-    })
-    
-    app.form.fillFromData('#my-form', formData);*/
-    $$('.convert-form-to-data').on('click', function(){
-        var formData = app.form.convertToData('#my-form');
+
+    app.form.fillFromData('#my-form p', formData);*/
+    $$('#mod-course-formDatos .convert-form-to-data').on('click', function(){
+        var formData = app.form.convertToData('#mod-course-formDatos');
         console.log(formData);
         var data = {
             certificacion: formData.certificacion,
             cupo : formData.cupo,
             tematica : formData.tematica,
-            name : formData.name,
+            nombre : formData.nombre,
             abono : formData.abono,
         };
+           
+        updateAtributeCourse(currentCourse.meta.uidDelCurso, '/data', data);
 
-        updateAtributeCourse(idCurso, '/alumnos/inscriptos/names', alumnos);
-        updateAtributeCourse(idCurso, '/data', data);
-        updateAtributeCourse(idCurso, '/objetivos/inscriptos/names', objetivos);
+        // var nuevoObjetivo = {nombre:"Tema1",descripcion:"Estudien mucho"};
+        // dataJSON["objetivo1"]
+        // dataJSON.objetivos.push(nuevoObjetivo);
+
+        //updateAtributeCourse(currentCourse.meta.uidDelCurso, '/alumnos/inscriptos/names', alumnos);
+        
         
     }); 
+    
 });
+
+function actualizarObjetivo(i){
+    var formObjetivo = app.form.convertToData(`#mod-course-formObjetivos${i}`);
+    var objetivo = {
+        descripcion : formObjetivo[`descripcion${i}`],
+        nombre : formObjetivo[`nombre${i}`],
+    };
+    console.log(formObjetivo);
+    updateAtributeCourse(currentCourse.meta.uidDelCurso, `/objetivos/${idsObjetivoPusheadoCursoActual[i]}`, objetivo);
+}
 
 //para CREAR curso
 $$(document).on('page:init', '.page[data-name="add-course"]', function () {

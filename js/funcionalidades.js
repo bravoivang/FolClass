@@ -146,33 +146,137 @@ app.on('click', function () {
 });
 */
 //ejemplo DOM 7 event para evento init de target page
+var arrayDeGaougesObjetivos = [];
+$$(document).once('page:init', '.page[data-name="home"]', function (e) {
+  // var demoGauge = app.gauge.create({
+  //   el: '#dos',
+  //   type: 'circle',
+  //   value: 0.5,
+  //   size: 250,
+  //   borderColor: '#2196f3',
+  //   borderWidth: 10,
+  //   valueText: '50%',
+  //   valueFontSize: 41,
+  //   valueTextColor: '#2196f3',
+  //   labelText: 'amount of something',
+  // });
+  console.log("cargue home");
 
-$$(document).on('page:init', '.page[data-name="home"]', function (e) {
+  // Change demo gauge on button click
   
-  cardDrawing (content,page,"card-basic");
+  
+  // cardDrawing (content,page,"card-basic");
+});
+
+function accionGauge(i){
+  var value = 10;
+  arrayDeGaougesObjetivos[i].update({
+    value: value / 100,
+    valueText: value + '%'
+  });
+}
+
+$$(document).on('page:afterin', '.page[data-name="objetivos"]', function (e) {
+  for (var i = 0; i<4 ; i++){ 
+    var gaugeObjetivos = app.gauge.get(`#gauge${i}`);
+    arrayDeGaougesObjetivos[i]= gaugeObjetivos;
+  }
 });
 
 $$(document).on('page:init', '.page[data-name="objetivos"]', function (e) {
-  var content = currentCourse.objetivos;
-  var page  = "objetivos";
-  cardDrawing (content,page,"card-basic");
+  dibujarCartasObjetivos ();
 });
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
   var content = currentCourse.alumnos; //la db deberia ser como objetivos. para alumnos tendria que menterme en .alumnos
   var page  = "alumnos";
-  cardDrawing (content,page,"card-basic");
+  dibujarGrilla (content,page,"card-basic");
 });
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
   var content = currentUser; //idem para ver los id cursos tendria que menterme en .alumnos
   var page  = "cursos";
-  cardDrawing (content,page,"card-basic");
+  dibujarGrilla (content,page,"card-basic");
 });
 
 
+function dibujarCartasObjetivos () {
+  var objetivos = currentCourse.objetivos;
+  var divNum = 4;
+  var cantidadDeObjetivos = objetivos['cantidad'];
+  var rows = Math.ceil(cantidadDeObjetivos / divNum);
+  
+  var cardZone = $$('.cardZone'); 
+  
+  for (var i = 0,aux=0; rows>i; i++)// contenido->card->row->cardZone
+  {  
+    //creo fila
+    var currentRow = $$('<div>'); 
+    currentRow.addClass("row");
+
+    for (var j = 0; divNum>j; j++)
+    {
+      //creo columna
+      var currentCol = $$('<div>');  
+      currentCol.addClass("col-30.tablet-30.desktop-30"); 
+      //creo card
+      var currentCard;
+      if(cantidadDeObjetivos-j < 1)
+      {
+        currentCard = $$('<div>');
+        currentCard.addClass("card-null card-content card-content-padding");
+        currentCard.append("");
+      }
+      else 
+      {
+        currentCard = crearCardObjetivo(j); 
+      }
+      aux++;
+      //inserto card a columna      
+      currentCol.append(currentCard);
+      //inserto columna a row
+      currentRow.append(currentCol);
+    }
+    //inserto row a dashboard
+    cardZone.append(currentRow);
+  }
+}
+
+function crearCardObjetivo (i){
+  //var currentObjetivo = currentCourse.objetivos;
+  var nombre = nombresObjetivosCursoActual[i];
+  var descripcion = descripcionesObjetivosCursoActual[i];
+
+  var cardHeader = $$('<div>').addClass('card-header');
+  cardHeader.text(nombre);
+  var cardFooter = $$('<div>').addClass('card-footer');
+  cardFooter.text(descripcion);
+  var cardContent = $$('<div>').addClass('card-content card-content-padding');
+  var col = $$('<div>').addClass('col-25 block block-strong text-align-center minCard-obj');
+  var gauge = $$('<div>').addClass('gauge gauge-init');
+  gauge.attr({
+    class:"gauge gauge-init",
+    id:`gauge${i}`,
+    onclick:`accionGauge(${i})`,
+    "data-value":"0.44",
+    "data-type":"circle",
+    "data-value-text":"44%",
+    "data-value-text-color":"#ff9800",
+    "data-border-color":"#ff9800",
+  });
+  
+  var card = $$('<div>').addClass("card");
+  card.append(cardHeader);
+  col.append(gauge);
+  cardContent.append(col);
+  card.append(cardContent);
+  card.append(cardFooter);
+  return card;
+}
+
+
 //se encarga de dibujar los slot de cards con sus respectivas rows según inscriptos en la DB
-function cardDrawing (content,page,cssCard) {
+function dibujarGrilla (content) {
   var divNum;
   var rows;
   var names = [];
@@ -185,10 +289,8 @@ function cardDrawing (content,page,cssCard) {
     };
 
     case "objetivos": {
-      for (var key in content){
-        if (key != "cantidad"){
-          names.push(content[key].nombre);
-        }
+      for (var int in nombresObjetivosCursoActual){
+          names.push(content[int].nombre);
       }
       divNum = 4;
       rows = Math.ceil(content['cantidad'] / divNum);
@@ -247,11 +349,11 @@ function cardDrawing (content,page,cssCard) {
       }
       else 
       {
-        var currentCard = $$('<div>');
-        currentCard.addClass("card-content card-content-padding"+" "+cssCard);
-        currentCard.append(array[aux]); /*aca estoy poniendo solo los nombres
+        var currentCard = crearCardObjetivo(i); /*aca estoy poniendo solo los nombres
                                                 pero iria toda la data. Lo cual tiene que ser una funcion
                                                 externa para cada caso*/
+          //append va a llamar a una funcion con paramtro idsObjetivoPusheadoCursoActual[i]
+          //la funcion va a devolver un html object creado con .html("string") 
       }
       //inserto card a columna      
       currentCol.append(currentCard);
@@ -262,7 +364,6 @@ function cardDrawing (content,page,cssCard) {
     cardZone.append(currentRow);
   }
 }
-
 
 function addEditCard (view){ //rediseñar
   var cardZone = $$('.cardZone'); 
@@ -277,3 +378,14 @@ function addEditCard (view){ //rediseñar
   currentRow.append(currentCol);
   cardZone.append(currentRow);
 }
+
+
+//helper
+function getObjLength (obj){
+	var cont = 0;
+	for (var key in obj){
+		cont++;
+	}
+return cont;
+}
+
