@@ -245,6 +245,16 @@ function readCourse (idCourse){ //lee el curso actual
       
         cantidadObjetivosActual = getObjLength(nombresObjetivosCursoActual);
 
+        for (var i = 0; i<getObjLength(idsAlumnosDelCursoActual) ;i++){
+            readUser(idsAlumnosDelCursoActual[i],function(nodoUsuarioEspecifico){
+                console.log(nodoUsuarioEspecifico);
+                dataAlumnosDelCursoActual.push(nodoUsuarioEspecifico.data);
+                administrativoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].administrativo);
+                desempenoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].desempeno);
+        
+              
+            });
+          };
 
    });
 }
