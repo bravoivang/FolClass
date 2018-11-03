@@ -134,7 +134,7 @@ function dibujarObjetivos(cantidad){
 //para UPDATEAR curso
 $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
     dibujarObjetivos(currentCourse.objetivos.cantidad);
-/*
+
     //    fbdb.ref().once('child_added',function(snap){
         var formData = {
             'certificacion': currentCourse.data.certificacion,
@@ -145,9 +145,11 @@ $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
             // 'listadoAlumnos': {juan:"juan"},
             // 'listadoObjetivos': {css:"css"},
         };
+    // app.form.fillFromData('#my-form p', formData);
+});
 
-    app.form.fillFromData('#my-form p', formData);*/
-    $$('#mod-course-formDatos .convert-form-to-data').on('click', function(){
+$$(document).on('page:afterin', '.page[data-name="mod-course"]', function () {
+    $$('.convert-form-to-data').on('click', function(){
         var formData = app.form.convertToData('#mod-course-formDatos');
         console.log(formData);
         var data = {
@@ -164,11 +166,8 @@ $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
         // dataJSON["objetivo1"]
         // dataJSON.objetivos.push(nuevoObjetivo);
 
-        //updateAtributeCourse(currentCourse.meta.uidDelCurso, '/alumnos/inscriptos/names', alumnos);
-        
-        
-    }); 
-    
+        //updateAtributeCourse(currentCourse.meta.uidDelCurso, '/alumnos/inscriptos/names', alumnos);       
+    });   
 });
 
 function actualizarObjetivo(i){

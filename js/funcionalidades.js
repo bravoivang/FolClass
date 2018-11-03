@@ -177,7 +177,7 @@ function accionGauge(i){
 }
 
 $$(document).on('page:afterin', '.page[data-name="objetivos"]', function (e) {
-  for (var i = 0; i<4 ; i++){ 
+  for (var i = 0; i<cantidadObjetivosActual ; i++){ 
     var gaugeObjetivos = app.gauge.get(`#gauge${i}`);
     arrayDeGaougesObjetivos[i]= gaugeObjetivos;
   }

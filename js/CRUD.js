@@ -106,7 +106,7 @@ function getStandarUser (){
                 password: "contraseña",
             },       
             cursos: {
-                idGeneradoPorPush: {
+                idDelCurso: {
                     meta:{
                         nombre: "nombre del curso al que esta inscripto",
                         idDelCurso: "idGeneradoPorPush",
@@ -213,20 +213,36 @@ function retrieveUserInformation(user){
 
 function readCourse (idCourse){ //lee el curso actual
     fbdb.ref('cursos/'+idCourse).on('value',function(snap){
-    currentCourse = snap.val();
-    hasChosenCourse = true;
-    $$('#lefPanel-mod-currentCourse').show();
-    console.log("se disparó value de readCourse");
-    idsObjetivoPusheadoCursoActual = [];
-    nombresObjetivosCursoActual = [];
-    descripcionesObjetivosCursoActual = [];
-    for (var key in currentCourse.objetivos){
-        if (key != "cantidad"){
-            idsObjetivoPusheadoCursoActual.push(key);
-            nombresObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].nombre);
-            descripcionesObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].descripcion)
-        } 
-    }
+        currentCourse = snap.val();
+        hasChosenCourse = true;
+        $$('#lefPanel-mod-currentCourse').show();
+        console.log("se disparó value de readCourse");
+        idsObjetivoPusheadoCursoActual = [];
+        nombresObjetivosCursoActual = [];
+        descripcionesObjetivosCursoActual = [];
+        for (var key in currentCourse.objetivos){
+            if (key != "cantidad"){
+                idsObjetivoPusheadoCursoActual.push(key);
+                nombresObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].nombre);
+                descripcionesObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].descripcion);
+            } 
+        }
+        fbdb.ref('usuarios/').on('value',function(snap_2){
+            var usuarios = snap_2.val();
+            /*for (var key in usuarios){
+
+                idsAlumnosDelCursoActual.push(key);
+                nombresAlumnosDelCursoActual
+                dataAlumnosDelCursoActual
+                infoCursoAlumnosDelCursoActual
+                administrativoCursoAlumnosDelCursoActual
+                desempeñoCursoAlumnosDelCursoActual
+            }*/
+            
+        });
+        cantidadObjetivosActual = getObjLength(nombresObjetivosCursoActual);
+
+
    });
 }
 
@@ -239,6 +255,7 @@ function readCurrentUser (uid){ //lee el curso actual
                 idCursosDisponibles.push(currentUser.cursos[`${key}`].meta['idDelCurso']);
             } 
         }
+    
     console.log("se disparó value de readUser");
     })/*.then(function(){
         readCourse(Object.keys(currentUser.inscriptos.names)[0]); // OBJETO CURSO
@@ -266,6 +283,4 @@ function getCantidad (path){  //creeria qeu es una cloudFunction
     update(rePath,cantidad);
     return cantidad;
 } 
-
-
 

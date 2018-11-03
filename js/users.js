@@ -16,6 +16,16 @@ var idCursosDisponibles = [];
 var idsObjetivoPusheadoCursoActual = [];
 var nombresObjetivosCursoActual = [];
 var descripcionesObjetivosCursoActual = [];
+var cantidadObjetivosActual;
+
+var idsAlumnosDelCursoActual = []; //sale de los alumnos inscriptos del current Course
+var nombresAlumnosDelCursoActual = []; //iterar idsALumnos y traer data->nombre
+var dataAlumnosDelCursoActual = []; // idem
+var infoCursoAlumnosDelCursoActual = []; //iterar idsAlumnos en currentCurso ID
+var administrativoCursoAlumnosDelCursoActual = []; //idem
+var desempeñoCursoAlumnosDelCursoActual = []; //idem
+
+
 
 var flag = true; // parche momentaneo
 var creador; 
