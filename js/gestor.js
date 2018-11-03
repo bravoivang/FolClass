@@ -161,7 +161,7 @@ $$(document).on('page:afterin', '.page[data-name="mod-course"]', function () {
         };
            
         updateAtributeCourse(currentCourse.meta.uidDelCurso, '/data', data);
-
+        mainView.router.navigate('/cursos/');
         // var nuevoObjetivo = {nombre:"Tema1",descripcion:"Estudien mucho"};
         // dataJSON["objetivo1"]
         // dataJSON.objetivos.push(nuevoObjetivo);

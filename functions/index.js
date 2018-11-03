@@ -1,6 +1,8 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
+//var idsCursosObjetivosGeneradoPorPush = [];
+
 /*
 var idCursoCounter = 0;
 
@@ -9,6 +11,9 @@ var idCursoCounter = 0;
 //
 
 */
+
+
+
 exports.obsCantidadCursos = functions.database.ref('usuarios/{idUsuario}/cursos/')
 .onWrite(function(snap,contex){
     var afterdata = snap.after.val();
@@ -113,6 +118,83 @@ exports.obsAlumnosAgregadosACurso = functions.database.ref('cursos/{cursoId}/')
     return null;
 });
 
+exports.obsObjetivosDelCursoSegunAlumno = functions.database.ref('usuarios/{idUsuario}/cursos/{idCurso}/')
+.onUpdate(function(snap,contex){
+    var cursoOnUpdate = snap.after.val();
+    console.log(cursoOnUpdate);
+
+    var idsObjetivosGeneradosPorPush = [];
+    for (var key in cursoOnUpdate.desempeno.objetivos){
+        if (key != "cantidad"){
+            idsObjetivosGeneradosPorPush.push(key);
+        }
+    }
+    for (var i = 0; i<getObjLength(idsObjetivosGeneradosPorPush); i++){
+        var puntaje = cursoOnUpdate.desempeno.objetivos[idsObjetivosGeneradosPorPush[i]].puntaje;
+        var idDelcurso = cursoOnUpdate.desempeno.objetivos[idsObjetivosGeneradosPorPush[i]].idDelCurso;
+        
+        var refObjetivo = admin.database().ref(`cursos/${idDelcurso}/objetivos/${idsObjetivosGeneradosPorPush[i]}/`);
+        console.log(refObjetivo);
+        refObjetivo.update({bucket:puntaje}); 
+    }
+    return null;
+});
+
+exports.obsObjetivosAgregadosACurso = functions.database.ref("cursos/{idCursos}")
+.onWrite(function (snap,context){
+    var objetivosOnWrite = snap.after.val();
+    console.log(objetivosOnWrite);
+
+    //esto es igual que el que ve los alumnos agregados:
+    var idsAlumosGeneradosPorPush = [];
+    for (var key in objetivosOnWrite.alumnos){
+        if (key != "cantidad"){
+            idsAlumosGeneradosPorPush.push(key);
+        }
+    }
+    var idsDeAlumnos = [];
+    for (var i =0; i<getObjLength(idsAlumosGeneradosPorPush); i++){
+        idsDeAlumnos.push(objetivosOnWrite.alumnos[idsAlumosGeneradosPorPush[i]].idDelUsuario);
+    }
+
+    var idsObjetivosGeneradosPorPush = [];
+    for (var key in objetivosOnWrite.objetivos){
+        if (key != "cantidad"){
+            idsObjetivosGeneradosPorPush.push(key);
+        }
+    }
+    var idDelCurso = objetivosOnWrite.meta.uidDelCurso; 
+    for (var i =0; i<getObjLength(idsDeAlumnos); i++){
+
+        for (var j = 0; j<getObjLength(idsObjetivosGeneradosPorPush); j++){
+            var dataJSON = {
+                nombre : objetivosOnWrite.objetivos[idsObjetivosGeneradosPorPush[j]].nombre,
+                idDelCurso : idDelCurso,
+                idObjetivoGeneradoPorPush : idsObjetivosGeneradosPorPush[j],
+            }
+            console.log(dataJSON);
+            
+            var refDesempenoObjetivos = admin.database().ref(`usuarios/${idsDeAlumnos[i]}/cursos/${idDelCurso}/desempeno/objetivos/${idsObjetivosGeneradosPorPush[j]}`);
+            refDesempenoObjetivos.update(dataJSON);     
+            
+        };
+    }
+    return null;
+});
+
+exports.sumarPuntajesEnEstadisticas = functions.database.ref('cursos/{idCurso}/objetivos/{idObjetivo}/')
+.onUpdate(function(snap,contex){ 
+    var puntajeEntrante = snap.after.child("bucket").val();
+    var refBucket = snap.after.ref;
+    var estadisticaAcumulada = snap.before.child("estadistica").val();
+    var estadisticaNueva = estadisticaAcumulada + puntajeEntrante;
+    if (puntajeEntrante != 0){
+        refBucket.update({bucket:0});
+        var refEstadistica = snap.after.ref;
+        refEstadistica.update({estadistica:estadisticaNueva});
+    }
+    return null;
+});
 
 function getObjLength (obj){
 	var cont = 0;
