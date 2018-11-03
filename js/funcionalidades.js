@@ -147,6 +147,8 @@ app.on('click', function () {
 */
 //ejemplo DOM 7 event para evento init de target page
 var arrayDeGaougesObjetivos = [];
+var arrayDeGaougesAlumnos = [];
+var alumnoEspecifico;
 $$(document).once('page:init', '.page[data-name="home"]', function (e) {
   // var demoGauge = app.gauge.create({
   //   el: '#dos',
@@ -168,13 +170,20 @@ $$(document).once('page:init', '.page[data-name="home"]', function (e) {
   // cardDrawing (content,page,"card-basic");
 });
 
-function accionGauge(i){
-  var value = 10;
-  arrayDeGaougesObjetivos[i].update({
-    value: value / 100,
-    valueText: value + '%'
-  });
-}
+  function accionGauge(i){
+    var value = 10;
+    arrayDeGaougesObjetivos[i].update({
+      value: value / 100,
+      valueText: value + '%'
+    });
+  }
+  function accionGaugeSeguimiento(i){
+    var value = 10;
+    arrayDeGaougesAlumnos[i].update({
+      value: value / 100,
+      valueText: value + '%'
+    });
+  }
 
 $$(document).on('page:afterin', '.page[data-name="objetivos"]', function (e) {
   for (var i = 0; i<cantidadObjetivosActual ; i++){ 
@@ -188,10 +197,21 @@ $$(document).on('page:init', '.page[data-name="objetivos"]', function (e) {
 });
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
+  dibujarCartasAlumnos ();
   
-  var content = currentCourse.alumnos; //la db deberia ser como objetivos. para alumnos tendria que menterme en .alumnos
-  var page  = "alumnos";
-  dibujarGrilla (content,page,"card-basic");
+});
+
+$$(document).on('page:init', '.page[data-name="alumno"]', function (e) {
+  dibujarCartasSeguimientoAlumnoEspecifico (alumnoEspecifico);
+});
+
+$$(document).on('page:afterin', '.page[data-name="alumno"]', function (e) {
+  for (var i = 0; i<cantidadObjetivosActual ; i++){ 
+    var gaugeAlumnos = app.gauge.get(`#gaugeAlumno${i}`);
+    arrayDeGaougesAlumnos[i]= gaugeAlumnos;
+  }
+  
+  
 });
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
@@ -199,6 +219,207 @@ $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
   var page  = "cursos";
   dibujarGrilla (content,page,"card-basic");
 });
+
+function abrirPopOVerLeerMas (idAlumnos,j) {
+  var nombre =  dataAlumnosDelCursoActual[j].nombre;
+  var apellido = dataAlumnosDelCursoActual[j].apellido;
+  var DNI = dataAlumnosDelCursoActual[j].DNI;
+  var localidad = dataAlumnosDelCursoActual[j].localidad;
+  var nacionalidad = dataAlumnosDelCursoActual[j].nacionalidad;
+  var email = dataAlumnosDelCursoActual[j].email;
+
+  var dynamicPopover = app.popover.create({
+    targetEl: `a.dynamic-popover#popOver${j}`,
+    content: `<div class="popover">\
+                <div class="popover-inner">\
+                  <div class="list simple-list">\
+                    <ul>\
+                      <li>${nombre}</li>\
+                      <li>${apellido}</li>\
+                      <li>${DNI}</li>\
+                      <li>${localidad}</li>\
+                      <li>${nacionalidad}</li>\
+                      <li>${email}</li>\
+                      <li><a href="#" class="link popover-close">Close me</a></li>\
+                    </ul>\
+                  </div>\
+                </div>\
+              </div>`,
+    // Events
+    on: {
+      open: function (popover) {
+        console.log('Popover open');
+      },
+      opened: function (popover) {
+        console.log('Popover opened');
+      },
+    }
+  });
+  dynamicPopover.open();
+}
+
+
+function dibujarCartasSeguimientoAlumnoEspecifico (alumno) {
+  var objetivos = nombresObjetivosCursoActual;
+  var divNum = 4;
+  var cantidadDeCursos = getObjLength(objetivos);
+  var rows = Math.ceil(cantidadDeCursos / divNum);
+  
+  var cardZone = $$('.cardZone'); 
+  
+  for (var i = 0,aux=0; rows>i; i++)// contenido->card->row->cardZone
+  {  
+    //creo fila
+    var currentRow = $$('<div>'); 
+    currentRow.addClass("row");
+
+    for (var j = 0; divNum>j; j++)
+    {
+      //creo columna
+      var currentCol = $$('<div>');  
+      currentCol.addClass("col-30.tablet-30.desktop-30"); 
+      //creo card
+      var currentCard;
+      if(cantidadDeCursos-j < 1)
+      {
+        currentCard = $$('<div>');
+        currentCard.addClass("card-null card-content card-content-padding");
+        currentCard.append("");
+      }
+      else 
+      {
+        currentCard = crearCardSeguimientoAlumnoEspecifico(j); 
+      }
+      aux++;
+      //inserto card a columna      
+      currentCol.append(currentCard);
+      //inserto columna a row
+      currentRow.append(currentCol);
+    }
+    //inserto row a dashboard
+    cardZone.append(currentRow);
+  }
+}
+
+function crearCardSeguimientoAlumnoEspecifico (j){
+  // var nombre = nombresObjetivosCursoActual[j];
+  // var apellido;
+  // var DNI;
+  // var localidad;
+  // var nacionalidad;
+  // var email;
+  var nombre = nombresObjetivosCursoActual[j];
+  var descripcion = descripcionesObjetivosCursoActual[j];
+
+  var cardHeader = $$('<div>').addClass('card-header');
+  cardHeader.text(nombre);
+  var cardFooter = $$('<div>').addClass('card-footer');
+  cardFooter.text(descripcion);
+  var cardContent = $$('<div>').addClass('card-content card-content-padding');
+  var col = $$('<div>').addClass('col-25 block block-strong text-align-center minCard-obj');
+  var gauge = $$('<div>').addClass('gauge gauge-init');
+  gauge.attr({
+    class:"gauge gauge-init",
+    id:`gaugeAlumno${j}`,
+    onclick:`accionGaugeSeguimiento(${j})`,
+    "data-value":"0.44",
+    "data-type":"circle",
+    "data-value-text":"44%",
+    "data-value-text-color":"#ff9800",
+    "data-border-color":"#ff9800",
+  });
+  
+  var card = $$('<div>').addClass("card");
+  card.append(cardHeader);
+  col.append(gauge);
+  cardContent.append(col);
+  card.append(cardContent);
+  card.append(cardFooter);
+  return card;
+}
+
+
+function dibujarCartasAlumnos () {
+  var alumnos = idsAlumnosDelCursoActual;
+  var divNum = 4;
+  var cantidadDeAlumnos = getObjLength(alumnos);
+  var rows = Math.ceil(cantidadDeAlumnos / divNum);
+  
+  var cardZone = $$('.cardZone'); 
+  
+  for (var i = 0,aux=0; rows>i; i++)// contenido->card->row->cardZone
+  {  
+    //creo fila
+    var currentRow = $$('<div>'); 
+    currentRow.addClass("row");
+
+    for (var j = 0; divNum>j; j++)
+    {
+      //creo columna
+      var currentCol = $$('<div>');  
+      currentCol.addClass("col-30.tablet-30.desktop-30"); 
+      //creo card
+      var currentCard;
+      if(cantidadDeAlumnos-j < 1)
+      {
+        currentCard = $$('<div>');
+        currentCard.addClass("card-null card-content card-content-padding");
+        currentCard.append("");
+      }
+      else 
+      {
+        currentCard = crearCardAlumnos(j); 
+      }
+      aux++;
+      //inserto card a columna      
+      currentCol.append(currentCard);
+      //inserto columna a row
+      currentRow.append(currentCol);
+    }
+    //inserto row a dashboard
+    cardZone.append(currentRow);
+  }
+}
+
+
+function crearCardAlumnos (j){
+  //var currentObjetivo = currentCourse.objetivos;
+/* modelo: 
+    <div class="card demo-card-header-pic">
+      <div style="background-image:url(http://lorempixel.com/1000/600/nature/3/)" class="card-header align-items-flex-end">Journey To Mountains</div>
+      <div class="card-content card-content-padding">
+        <p class="date">Posted on January 21, 2015</p>
+        <p>Quisque eget vestibulum nulla. Quisque quis dui quis ex ultricies efficitur vitae non felis. Phasellus quis nibh hendrerit...</p>
+      </div>
+      <div class="card-footer"><a href="#" class="link">Like</a><a href="#" class="link">Read more</a></div>
+    </div>
+*/
+  // var nombre = nombresObjetivosCursoActual[j];
+  // var apellido;
+  // var DNI;
+  // var localidad;
+  // var nacionalidad;
+  // var email;
+  console.log(dataAlumnosDelCursoActual[j]);
+ 
+  var nick = dataAlumnosDelCursoActual[j].nick;
+  var idAlumnoEspecifico = idsAlumnosDelCursoActual[j];
+  var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
+  modeloDeCarta.html(
+    `<div style="background-image:url(https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>\
+    <div class="card-content card-content-padding">\
+      <p class="date">Posted on January 21, 2015</p>\
+      <p>${nick}</p>\
+    </div>\
+    <div class="card-footer">\
+    <a href="/alumno/" onclick="setAlumnoEspecifico('${idAlumnoEspecifico}')" class="link">Seguimiento</a>\
+    <a href="#" onclick="abrirPopOVerLeerMas('${idAlumnoEspecifico}',${j})" class="link dynamic-popover" id="popOver${j}">Leer más</a>\
+    </div>\
+    `);
+
+  var card = modeloDeCarta;
+  return card;
+}
 
 
 function dibujarCartasObjetivos () {
@@ -243,10 +464,10 @@ function dibujarCartasObjetivos () {
   }
 }
 
-function crearCardObjetivo (i){
+function crearCardObjetivo (j){
   //var currentObjetivo = currentCourse.objetivos;
-  var nombre = nombresObjetivosCursoActual[i];
-  var descripcion = descripcionesObjetivosCursoActual[i];
+  var nombre = nombresObjetivosCursoActual[j];
+  var descripcion = descripcionesObjetivosCursoActual[j];
 
   var cardHeader = $$('<div>').addClass('card-header');
   cardHeader.text(nombre);
@@ -257,8 +478,8 @@ function crearCardObjetivo (i){
   var gauge = $$('<div>').addClass('gauge gauge-init');
   gauge.attr({
     class:"gauge gauge-init",
-    id:`gauge${i}`,
-    onclick:`accionGauge(${i})`,
+    id:`gauge${j}`,
+    onclick:`accionGauge(${j})`,
     "data-value":"0.44",
     "data-type":"circle",
     "data-value-text":"44%",
@@ -390,3 +611,6 @@ function getObjLength (obj){
 return cont;
 }
 
+function setAlumnoEspecifico(idAlumnos){
+  alumnoEspecifico = idAlumnos;
+}

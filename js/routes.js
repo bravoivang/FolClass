@@ -62,6 +62,16 @@ routes = [
       },
     },
     {
+      name: 'alumno',
+      path: '/alumno/',
+      url: './pages/alumno.html',
+      on: {
+        pageBeforeIn: function (event, page) {
+            $$('#navbar-alumno-currentCourse').text(currentCourse.data["nombre"]);       
+        },
+      },
+    },
+    {
       path: '/add-student/',
       url: './pages/add-student.html',
     },
