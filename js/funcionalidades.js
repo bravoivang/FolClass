@@ -188,6 +188,15 @@ $$(document).on('page:init', '.page[data-name="objetivos"]', function (e) {
 });
 
 $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
+  for (var i = 0; i<getObjLength(idsAlumnosDelCursoActual) ;i++){
+    readUser(idsAlumnosDelCursoActual[i],function(nodoUsuarioEspecifico){
+        console.log(nodoUsuarioEspecifico);
+        dataAlumnosDelCursoActual.push(nodoUsuarioEspecifico.data);
+        administrativoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].administrativo);
+        desempenoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].desempeno);
+      
+    });
+  };
   var content = currentCourse.alumnos; //la db deberia ser como objetivos. para alumnos tendria que menterme en .alumnos
   var page  = "alumnos";
   dibujarGrilla (content,page,"card-basic");

@@ -212,34 +212,37 @@ function retrieveUserInformation(user){
 }
 
 function readCourse (idCourse){ //lee el curso actual
+    idsObjetivoPusheadoCursoActual = [];
+    nombresObjetivosCursoActual = [];
+    descripcionesObjetivosCursoActual = [];
+    estadisticasObjetivosCursoActual = [];
+    
+    idsAlumnosDelCursoActual = [];
+    dataAlumnosDelCursoActual = [];
+    administrativoCursoAlumnosDelCursoActual = [];
+    desempenoCursoAlumnosDelCursoActual = [];
+
     fbdb.ref('cursos/'+idCourse).on('value',function(snap){
         currentCourse = snap.val();
         hasChosenCourse = true;
         $$('#lefPanel-mod-currentCourse').show();
         console.log("se disparó value de readCourse");
-        idsObjetivoPusheadoCursoActual = [];
-        nombresObjetivosCursoActual = [];
-        descripcionesObjetivosCursoActual = [];
+       
         for (var key in currentCourse.objetivos){
             if (key != "cantidad"){
                 idsObjetivoPusheadoCursoActual.push(key);
                 nombresObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].nombre);
                 descripcionesObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].descripcion);
+                estadisticasObjetivosCursoActual.push(currentCourse.objetivos[`${key}`].estadistica);
+
             } 
         }
-        fbdb.ref('usuarios/').on('value',function(snap_2){
-            var usuarios = snap_2.val();
-            /*for (var key in usuarios){
-
-                idsAlumnosDelCursoActual.push(key);
-                nombresAlumnosDelCursoActual
-                dataAlumnosDelCursoActual
-                infoCursoAlumnosDelCursoActual
-                administrativoCursoAlumnosDelCursoActual
-                desempeñoCursoAlumnosDelCursoActual
-            }*/
-            
-        });
+        for (var key in currentCourse.alumnos){
+            if (key != "cantidad"){
+                idsAlumnosDelCursoActual.push(currentCourse.alumnos[`${key}`].idDelUsuario);
+            }
+        }
+      
         cantidadObjetivosActual = getObjLength(nombresObjetivosCursoActual);
 
 
@@ -264,11 +267,13 @@ function readCurrentUser (uid){ //lee el curso actual
    })*/;  
 }
 
-function readUser (uid){  //lee cualquier usuario
-    fbdb.ref('usuarios/'+uid).on('value',function(snap){
-        rndUser = snap.val(); 
+function readUser (id,callback){  //lee cualquier usuario
+    fbdb.ref('usuarios/'+id).once('value',function(snap){
+        var nodoUsuarioEspecifico = snap.val(); 
+        callback(nodoUsuarioEspecifico);  
     });
 }
+
 
 //listeners entre base de datos.  
 function getCantidad (path){  //creeria qeu es una cloudFunction
