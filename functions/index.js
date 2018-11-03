@@ -78,32 +78,41 @@ exports.IdCuoursesGenerator = functions.https.onRequest(function(quest, response
 
 exports.obsAlumnosAgregadosACurso = functions.database.ref('cursos/{cursoId}/')
 .onWrite(function(snap,context){//con onCreate snap.val() is not a function
-    var datoRaiz = snap.after.val(); 
-    console.log(datoRaiz);
-    //var dirAlumno = snap.after.ref.child('alumnos').key.toString();
-    var dirData = snap.after.ref.child('data').key.toString();
-    var idGeneradoPorPush = snap.after.ref.child('alumnos').child("").key.toString();
-    console.log(idGeneradoPorPush);
+    var cursoOnWrite = snap.after.val(); 
+    console.log(cursoOnWrite);
+    var idsAlumosGeneradosPorPush = [];
+    for (var key in cursoOnWrite.alumnos){
+        if (key != "cantidad"){
+            idsAlumosGeneradosPorPush.push(key);
+        }
+    }
+    
+    var idsDeAlumnos = [];
+    for (var i =0; i<getObjLength(idsAlumosGeneradosPorPush); i++){
+        idsDeAlumnos.push(cursoOnWrite.alumnos[idsAlumosGeneradosPorPush[i]].idDelUsuario);
+    }
+    
+    console.log(idsAlumosGeneradosPorPush);
 
-    var idDelCurso = snap.after.ref.key.toString();
-    var uidDelAlumno = datoRaiz["alumnos"][`${idGeneradoPorPush}`]["idDelUsuario"];
-    var nombre = datoRaiz[`${dirData}`]["nombre"];
-    var dataJSON = {
-        uidDelAlumno : uidDelAlumno,
-        idDelCurso : idDelCurso,
-        nombreDelCurso : nombre,
+    // var idDelCurso = snap.after.ref.key.toString();
+    var idDelCurso = cursoOnWrite.meta.uidDelCurso;
+    var nombreDelCurso = cursoOnWrite.data.nombre;
+
+    for (var i = 0; i<getObjLength(idsDeAlumnos); i++){
+        var dataJSON = {
+            uidDelAlumno : idsDeAlumnos[i],
+            idDelCurso : idDelCurso,
+            nombreDelCurso : nombreDelCurso,
+        }
+        console.log(dataJSON);
+        
+        var refNuevoAlumno = admin.database().ref(`usuarios/${dataJSON.uidDelAlumno}/cursos/${dataJSON.idDelCurso}/meta/`);
+        refNuevoAlumno.set(dataJSON)       
     };
-    console.log(dataJSON);
 
-    var refNuevoAlumno = admin.database().ref(`usuarios/${dataJSON.uidDelAlumno}/cursos/${dataJSON.idDelCurso}`);
-    refNuevoAlumno.set(dataJSON)
-    .then(function(){
-        console.log("Curso llamando a Alumno OK");
-    },function(error){
-        console.log("Curso no pudo llamar a Alumno: ",error);
-    });
     return null;
 });
+
 
 function getObjLength (obj){
 	var cont = 0;
