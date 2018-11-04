@@ -152,7 +152,6 @@ var arrayDeStepperAlumnos = [];
 var alumnoEspecifico;
 var numeroAlumnoEspecifico;
 
-var elementosCreadosAlumno = false;
 
 $$(document).once('page:init', '.page[data-name="home"]', function (e) {
   // var demoGauge = app.gauge.create({
@@ -191,21 +190,17 @@ $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
 });
 
 $$(document).on('page:init', '.page[data-name="alumno"]', function (e) {
+  console.log("init 1 =",alumnoEspecifico);
   dibujarCartasSeguimientoAlumnoEspecifico (numeroAlumnoEspecifico);
+  console.log("init 2 =",alumnoEspecifico);
 });
 
-$$(document).once('page:afterin', '.page[data-name="alumno"]', function (e) {
-  /*if (elementosCreadosAlumno){
-    for (var i = 0; i<cantidadObjetivosActual ; i++){
-      arrayDeGaougesAlumnos[i].destroy();
-    }
-    console.log("elimine");
-  }*/
-  
+
+$$(document).on('page:afterin', '.page[data-name="alumno"]', function (e) {
   for (var i = 0; i<cantidadObjetivosActual ; i++){ 
     var gaugeAlumnos = app.gauge.get(`#gaugeAlumno${i}`);
     arrayDeGaougesAlumnos[i] = gaugeAlumnos;
-
+    
     var stepperAlumnos = app.stepper.get(`#stepperAlumno${i}${alumnoEspecifico}`);
     stepperAlumnos.id = idsObjetivoPusheadoCursoActual[i];
     stepperAlumnos.i = i;
@@ -215,15 +210,10 @@ $$(document).once('page:afterin', '.page[data-name="alumno"]', function (e) {
       stepper.setValue(value);
       arrayDeGaougesAlumnos[stepper.i].update({"value":value/100,valueText:value+"%"})
     })
-    arrayDeStepperAlumnos[i] = stepperAlumnos;
-
-  }
-   
+    arrayDeStepperAlumnos[i] = stepperAlumnos; 
+  }   
 });
-/*
-$$(document).once('page:afterin', '.page[data-name="alumno"]', function (e) {
-  elementosCreadosAlumno = true;
-});*/
+
 
 $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
   var content = currentUser; //idem para ver los id cursos tendria que menterme en .alumnos
@@ -313,12 +303,12 @@ function dibujarCartasSeguimientoAlumnoEspecifico (numeroAlumnoEspecifico) {
 }
 
 function crearCardSeguimientoAlumnoEspecifico (j){
-  console.log(j);
+  console.log("crarCard =",alumnoEspecifico);
   var nombre = nombresObjetivosCursoActual[j];
   var descripcion = descripcionesObjetivosCursoActual[j];
   var idObjetivo = idsObjetivoPusheadoCursoActual[j]; 
   var puntaje = objetivosCursoAlumnosDelCursoActual[numeroAlumnoEspecifico][idObjetivo].puntaje;
-  console.log(numeroAlumnoEspecifico);
+ 
 
   var cardHeader = $$('<div>').addClass('card-header');
   cardHeader.text(nombre);
@@ -423,12 +413,10 @@ function crearCardAlumnos (j){
   // var localidad;
   // var nacionalidad;
   // var email;
-  console.log(dataAlumnosDelCursoActual[j]);
+  
  
   var nick = dataAlumnosDelCursoActual[j].nick;
   var idAlumnoEspecifico = idsAlumnosDelCursoActual[j];
-  console.log("idAlumnoEspecifico en crar Card : ",idAlumnoEspecifico);
-  console.log("j en crar Card : ",j);
   var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
   modeloDeCarta.html(
     `<div style="background-image:url(https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>\
@@ -437,7 +425,7 @@ function crearCardAlumnos (j){
       <p>${nick}</p>\
     </div>\
     <div class="card-footer">\
-    <a href="/alumno/" onclick="setAlumnoEspecifico('${idAlumnoEspecifico}',${j})" class="link">Seguimiento</a>\
+    <a href="#" onclick="setAlumnoEspecifico('${idAlumnoEspecifico}',${j})" class="link">Seguimiento</a>\
     <a href="#" onclick="abrirPopOVerLeerMas('${idAlumnoEspecifico}',${j})" class="link dynamic-popover" id="popOver${j}">Leer más</a>\
     </div>\
     `);
@@ -637,8 +625,10 @@ return cont;
 }
 
 function setAlumnoEspecifico(idAlumno,j){
+  mainView.router.navigate("/alumno/");
   alumnoEspecifico = idAlumno;
   numeroAlumnoEspecifico = j;
+  console.log("set =",alumnoEspecifico);
 }
 
 function accionGaugeObjetivo(i){
