@@ -188,6 +188,9 @@ $$(document).on('page:init', '.page[data-name="alumnos"]', function (e) {
   dibujarCartasAlumnos ();
   
 });
+$$(document).on('page:init', '.page[data-name="alumno"]', function (e) {
+  $$('#navbar-alumno-currentCourse').text(dataAlumnosDelCursoActual[numeroAlumnoEspecifico].nombre);
+});
 
 $$(document).on('page:init', '.page[data-name="alumno"]', function (e) {
   console.log("init 1 =",alumnoEspecifico);
@@ -481,6 +484,7 @@ function crearCardObjetivo (j){
   //var currentObjetivo = currentCourse.objetivos;
   var nombre = nombresObjetivosCursoActual[j];
   var descripcion = descripcionesObjetivosCursoActual[j];
+  var estadistica = estadisticasObjetivosCursoActual[j];
 
   var cardHeader = $$('<div>').addClass('card-header');
   cardHeader.text(nombre);
@@ -493,9 +497,9 @@ function crearCardObjetivo (j){
     class:"gauge gauge-init",
     id:`gauge${j}`,
     onclick:`accionGaugeObjetivo(${j})`,
-    "data-value":"0.44",
+    "data-value":`${estadistica/100}`,
     "data-type":"circle",
-    "data-value-text":"44%",
+    "data-value-text":`${estadistica}`+"%",
     "data-value-text-color":"#ff9800",
     "data-border-color":"#ff9800",
   });
