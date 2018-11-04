@@ -182,6 +182,9 @@ function createCourse (dataJSON){
     //idCourses.push(idNewAvaileble); update "metadata de cursos" cloudFunction tiene que actualizar lenght de cursos
     //storage(path, newCourseData);
 }
+function updateCurrentAlumno (atributoPath, valuesChanged) {
+    fbdb.ref('usuarios/'+alumnoEspecifico+'/cursos/'+idCurrentCourse+'/'+atributoPath).update(valuesChanged);
+}
 
 function updateAtributeCourse (idCurso, atribute, dataObj){  //cambia un atributo a la vez
     //atribute format : ['cursos/] => 'data/.../'
@@ -212,19 +215,24 @@ function retrieveUserInformation(user){
 }
 
 function readCourse (idCourse){ //lee el curso actual
-    idsObjetivoPusheadoCursoActual = [];
-    nombresObjetivosCursoActual = [];
-    descripcionesObjetivosCursoActual = [];
-    estadisticasObjetivosCursoActual = [];
-    
-    idsAlumnosDelCursoActual = [];
-    dataAlumnosDelCursoActual = [];
-    administrativoCursoAlumnosDelCursoActual = [];
-    desempenoCursoAlumnosDelCursoActual = [];
 
     fbdb.ref('cursos/'+idCourse).on('value',function(snap){
+
+        idsObjetivoPusheadoCursoActual = [];
+        nombresObjetivosCursoActual = [];
+        descripcionesObjetivosCursoActual = [];
+        estadisticasObjetivosCursoActual = [];
+        
+        idsAlumnosDelCursoActual = [];
+        dataAlumnosDelCursoActual = [];
+        administrativoCursoAlumnosDelCursoActual = [];
+        desempenoCursoAlumnosDelCursoActual = [];
+        participacionCursoAlumnosDelCursoActual = [];
+        objetivosCursoAlumnosDelCursoActual = [];
+
         currentCourse = snap.val();
         hasChosenCourse = true;
+        idCurrentCourse = currentCourse.meta.uidDelCurso;
         $$('#lefPanel-mod-currentCourse').show();
         console.log("se disparó value de readCourse");
        
@@ -249,14 +257,24 @@ function readCourse (idCourse){ //lee el curso actual
             readUser(idsAlumnosDelCursoActual[i],function(nodoUsuarioEspecifico){
                 console.log(nodoUsuarioEspecifico);
                 dataAlumnosDelCursoActual.push(nodoUsuarioEspecifico.data);
-                administrativoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].administrativo);
-                desempenoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].desempeno);
-        
-              
+                administrativoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[idCurrentCourse].administrativo);
+                desempenoCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[idCurrentCourse].desempeno);
+                participacionCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[idCurrentCourse].desempeno.participacion);
+                objetivosCursoAlumnosDelCursoActual.push(nodoUsuarioEspecifico.cursos[idCurrentCourse].desempeno.objetivos);
+
+                // puntajesObjetivoAlmunosDelCursoActual.push(nodoUsuarioEspecifico.cursos[currentCourse.meta.uidDelCurso].desempeno.objetivos[idsObjetivoPusheadoCursoActual[j]].puntaje);
+             
             });
-          };
+            
+        };
 
    });
+}
+
+function readObjetivoDelAlumno (objetivoAlumnoDelCursoActual) {
+    for ( var i = 0; i<getObjLength(idsObjetivoPusheadoCursoActual) ;i ++){
+        puntajesObjetivoAlmunosDelCursoActual.push(objetivosCursoAlumnosDelCursoActual[objetivoAlumnoDelCursoActual].puntaje);
+    }
 }
 
 function readCurrentUser (uid){ //lee el curso actual
@@ -285,17 +303,17 @@ function readUser (id,callback){  //lee cualquier usuario
 }
 
 
-//listeners entre base de datos.  
-function getCantidad (path){  //creeria qeu es una cloudFunction
-    var cantidad = {
-        cantidad,
-    };
-	fbdb.ref(path).on('value',function (snap) {
-		cantidad.cantidad = getObjLength(snap.val());
-    });
-    var lastIndex = fbdb.ref(path).getKey();
-    var rePath = path.slice(0,-lastIndex.length)+'/meta';
-    update(rePath,cantidad);
-    return cantidad;
-} 
+// //listeners entre base de datos.  
+// function getCantidad (path){  //creeria qeu es una cloudFunction
+//     var cantidad = {
+//         cantidad,
+//     };
+// 	fbdb.ref(path).on('value',function (snap) {
+// 		cantidad.cantidad = getObjLength(snap.val());
+//     });
+//     var lastIndex = fbdb.ref(path).getKey();
+//     var rePath = path.slice(0,-lastIndex.length)+'/meta';
+//     update(rePath,cantidad);
+//     return cantidad;
+// }  DEPRECATED
 
