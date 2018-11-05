@@ -63,7 +63,7 @@ function getStandarCourse (){
             data : {
                 nombre: "nombre del curso",
                 tematica: "tematica del curso",
-                certificacion: "true-false",
+                /*certificacion: "true-false",*/
                 cupo: "cantidad de alumnos",
                 abono: "pago-gratuito",
             },       
@@ -72,7 +72,8 @@ function getStandarCourse (){
                 idGeneradoPorPush: {
                     nombre: "nombre del objetivo",
                     descripcion: "descripcion del objetivo",
-                    idDelUsuario: "uid generado por Auth()"
+                    estadistica: "0",
+                    bucket: "0",
                 },
             },
             alumnos: {
@@ -112,11 +113,11 @@ function getStandarUser (){
                         idDelCurso: "idGeneradoPorPush",
                         apellido: "apellido del alumno en el curso que esta inscripto",
                     },
-                    administrativo : {
+                   /* administrativo : {
                             asistencias : "numero de asistencias",
                             calificacion : "calificacion del alumno",
                             regularidad : "true-false",
-                    },
+                    },*/
                     desempeno : {
                         objetivos : {
                             idGeneradoPorPush: {
@@ -124,9 +125,9 @@ function getStandarUser (){
                                 puntaje: "puntaje del alumno en este objetivo",
                             },
                         },
-                        participacion : {
+                        /*participacion : {
                             colaboracion : "comentario agergado por la profesora",
-                        },
+                        },*/
                     },
                 },
             },
@@ -141,6 +142,7 @@ function createStructUser (){ //funcion interna
     var refNuevoUsuario = fbdb.ref('usuarios/').push();
     var newUserData = getStandarUser();
     newUserData.meta[`uidDelCurso`] = refNuevoUsuario.key;
+    
     refNuevoUsuario.set(newUserData)
     .then(function(){
         console.log("se logró crear usuario vacio");

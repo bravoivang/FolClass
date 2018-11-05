@@ -47,7 +47,7 @@ exports.obsCantidadObjetivos = functions.database.ref('cursos/{idCurso}/objetivo
     });
 });
 
-
+/*
 exports.obsCantidadCursos = functions.database.ref('usuarios/{idUsuario}/cursos/')
 .onWrite(function(snap,contex){
     var afterdata = snap.after.val();
@@ -64,7 +64,7 @@ exports.obsCantidadCursos = functions.database.ref('usuarios/{idUsuario}/cursos/
     .catch(function(error){
         console.log(error);
     });
-});
+});*/
 
 exports.obsCantObjAlumnoCurso = functions.database.ref('usuarios/{idUsuario}/cursos/{idCurso}/desempeno/objetivos')
 .onWrite(function(snap,contex){
@@ -245,7 +245,7 @@ exports.obsObjetivosDelCursoSegunAlumno = functions.database.ref('usuarios/{idUs
     var cursoOnUpdate = snap.after.val();
     var before = snap.before.val();
     console.log(cursoOnUpdate);
-    var cantidadA = cursoOnUpdatedesempeno.objetivos.cantidad;
+    var cantidadA = cursoOnUpdate.desempeno.objetivos.cantidad;
     var cantidadB = before.desempeno.objetivos.cantidad;
 
     if (cantidadA!=cantidadB) {
@@ -261,7 +261,7 @@ exports.obsObjetivosDelCursoSegunAlumno = functions.database.ref('usuarios/{idUs
         
         var refObjetivo = admin.database().ref(`cursos/${idDelcurso}/objetivos/${idsObjetivosGeneradosPorPush[i]}/`);
         console.log(refObjetivo);
-        refObjetivo.update({bucket:puntaje}); 
+        refObjetivo.update({"bucket":puntaje}); 
     }
     return null;
     }
