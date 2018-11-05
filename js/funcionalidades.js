@@ -193,6 +193,8 @@ $$(document).on('page:afterin', '.page[data-name="alumno"]', function (e) {
     arrayDeGaougesAlumnos[i] = gaugeAlumnos;
     
     var stepperAlumnos = app.stepper.get(`#stepperAlumno${i}${alumnoEspecifico}`);
+    
+
     stepperAlumnos.valorPrevioGauge = gaugeAlumnos.el["data-value"];
     stepperAlumnos.id = idsObjetivoPusheadoCursoActual[i];
     stepperAlumnos.i = i;
@@ -206,6 +208,12 @@ $$(document).on('page:afterin', '.page[data-name="alumno"]', function (e) {
     })
     arrayDeStepperAlumnos[i] = stepperAlumnos; 
   }   
+  for(var i = 0; i<cantidadObjetivosActual ; i++){
+    $$("div.card-footer.stepper-center")[i].style.paddingLeft="25%"
+  }
+  
+
+
 });
 
 
@@ -350,10 +358,12 @@ function crearCardDashboardObjetivo (j){
   for (var i = 0; i<getObjLength(estadisticasObjetivosCursoActual) ; i++ ) {
     porcentualObjetivos += estadisticasObjetivosCursoActual[i];
   }
+  porcentualObjetivos = porcentualObjetivos/getObjLength(estadisticasObjetivosCursoActual);
   var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
   modeloDeCarta.html(
     `<div class="card-content card-content-padding">\
-      <p>${porcentualObjetivos}%</p>\
+      <p class="text-color-gray">Promedio</p>\
+      <p class="db-text">${porcentualObjetivos}%</p>\
     </div>\
     `);
 
@@ -412,11 +422,13 @@ function crearCardDashboardDataCurso (j){
   dataCurso.push(tematica);
   dataCurso.push(abono);
   dataCurso.push(cupo);
+  var titulos = ["Temática","Abono","Cupo"];
 
-  var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
+  var modeloDeCarta = $$('<div>').addClass("card");
   modeloDeCarta.html(
     `<div class="card-content card-content-padding">\
-      <p>${dataCurso[j]}</p>\
+      <p class="text-color-gray">${titulos[j]}</p>\
+      <p class="db-text">${dataCurso[j]}</p>\
     </div>\
     `);
 
@@ -504,7 +516,7 @@ function dibujarCartasSeguimientoAlumnoEspecifico (numeroAlumnoEspecifico) {
     cardZone.append(currentRow);
   }
 }
-
+var fot ;
 function crearCardSeguimientoAlumnoEspecifico (j){
   console.log("crarCard =",alumnoEspecifico);
   var nombre = nombresObjetivosCursoActual[j];
@@ -515,7 +527,8 @@ function crearCardSeguimientoAlumnoEspecifico (j){
 
   var cardHeader = $$('<div>').addClass('card-header');
   cardHeader.text(nombre);
-  var cardFooter = $$('<div>').addClass('card-footer');
+  var cardFooter = $$('<div>').addClass('card-footer stepper-center');
+
   var stepper = $$('<div>').addClass('block');
   stepper.html(`
   <div class="stepper stepper-fill stepper-round stepper-init" id="stepperAlumno${j}${alumnoEspecifico}">
@@ -541,8 +554,8 @@ function crearCardSeguimientoAlumnoEspecifico (j){
     "data-value":`${puntaje/100}`,
     "data-type":"circle",
     "data-value-text":`${puntaje}`+"%",
-    "data-value-text-color":"#ff9800",
-    "data-border-color":"#ff9800",
+    "data-value-text-color":"#2196f3",
+    "data-border-color":"#2196f3",
   });
   
   var card = $$('<div>').addClass("card");
@@ -622,10 +635,9 @@ function crearCardAlumnos (j){
   var idAlumnoEspecifico = idsAlumnosDelCursoActual[j];
   var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
   modeloDeCarta.html(
-    `<div style="background-image:url(https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg)" class="card-header align-items-flex-end">Journey To Mountains</div>\
-    <div class="card-content card-content-padding">\
-      <p class="date">Posted on January 21, 2015</p>\
-      <p>${nick}</p>\
+    `<div class="card-header align-items-flex-end">${nick}</div>\
+    <div class="card-content card-content-padding bg-img-perfil">\
+    </br>\</br>\</br>\</br>\</br>\</br>\</br>\
     </div>\
     <div class="card-footer">\
     <a href="#" onclick="setAlumnoEspecifico('${idAlumnoEspecifico}',${j})" class="link">Seguimiento</a>\
@@ -700,8 +712,8 @@ function crearCardObjetivo (j){
     "data-value":`${estadistica/100}`,
     "data-type":"circle",
     "data-value-text":`${estadistica}`+"%",
-    "data-value-text-color":"#ff9800",
-    "data-border-color":"#ff9800",
+    "data-value-text-color":"#2196f3",
+    "data-border-color":"#2196f3",
   });
   
   var card = $$('<div>').addClass("card");

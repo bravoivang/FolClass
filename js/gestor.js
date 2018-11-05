@@ -304,7 +304,7 @@ panelLeft.once('open', function (panel) {
         var nombreCurso = vecNombres[i];
         var idCurso = vecId[i];
         var currentA = $$('<a>');
-        currentA.addClass("button panel-close");
+        currentA.addClass("button panel-close color-white");
         currentA.text(nombreCurso);
         //currentA.attr('href', '/');
         currentA.attr('onclick', `haElegidoCurso('${idCurso}')`);

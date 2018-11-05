@@ -23,30 +23,25 @@
     
     <!-- carga de estilos -->
 
-        <!-- en Web solo estaria usando css/framework7.min.css -->
-<!--    <link rel="stylesheet"  type="text/css" href="css/framework7.css">  FRAMEWORK7-->
-<!--    <link rel="stylesheet"  type="text/css" href="css/framework7.ios.css">  FRAMEWORK7-->
-<!--    <link rel="stylesheet"  type="text/css" href="css/framework7.ios.min.css">  FRAMEWORK7-->
     <link rel="stylesheet"  type="text/css" href="css/framework7.md.css">  <!--FRAMEWORK7-->
-<!--    <link rel="stylesheet"  type="text/css" href="css/framework7.md.min.css">  FRAMEWORK7-->
-<!--    <link rel="stylesheet"  type="text/css" href="css/framework7.min.css">  FRAMEWORK7-->
+
         <!-- carga de estilos de retoque -->  
     <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/app.css">
    
 
 </head>
-<body>
+<body class="">
     <div id="app">
         <!-- Status bar overlay for fullscreen mode--> <!-- Creo que no la uso-->
         <div class="statusbar"></div>
         <!-- Left panel with reveal effect when hidden -->
-        <div class="panel panel-left panel-cover">
+        <div class="panel panel-left panel-cover  theme-dark">
           <div class="view view-left">
             <div class="page"> <!-- contenido del LEFT -->
               <div class="navbar">
                 <div class="navbar-inner sliding"> <!-- Logo y nombre -->
-                  <div class="title">CommIT</div>
+                  <div class="title">FolClass</div>
                 </div>
               </div>
               <div class="page-content"> <!-- seleccion de pantallas -->
@@ -61,7 +56,7 @@
                   <ul>
                     
                     <li>
-                      <a href="/" data-view=".view-main" class="panel-close">Dashboard</a>
+                      <a href="/" data-view=".view-main" class="panel-close">Resumen</a>
                     </li>
                     <li>
                       <a href="/objetivos/" data-view=".view-main" class="panel-close">Objetivos</a>
@@ -70,7 +65,7 @@
                       <a href="/alumnos/" data-view=".view-main" class="panel-close">Alumnos</a>
                     </li>
                     <li class="accordion-item">
-                      <a href="" data-view=".view-main" class="accordion-item-toggle" id="acordionCursos">CURSOS</a>
+                      <a href="" data-view=".view-main" class="accordion-item-toggle" id="acordionCursos">Cursos</a>
                       <div class="accordion-item-content text-align-center">
                         <div id="acordionCursosList">
                          
@@ -96,11 +91,11 @@
                   </ul>
                 </div>
 
-                <div class="block-title">Help</div> <!-- help -->
+                <div class="block-title">Ayuda</div> <!-- help -->
                 <div class="list links-list">
                   <ul>
                     <li>
-                      <a href="/about/"  class="" >About</a>
+                      <a href="/about/"  class="panel-close" >About</a>
                     </li> 
                     <li>
                       <a href="#"  class="panel-close" onclick="singOut()" >Sing out</a>
@@ -116,7 +111,7 @@
         
         <div class="view view-main"> <!-- Your main view, should have "view-main" class -->
           
-          <div class="page" data-name="home"> <!-- Page, data-name contains page name which can be used in callbacks -->
+          <div class="page bg-color-grey" data-name="home"> <!-- Page, data-name contains page name which can be used in callbacks -->
            
             <div class="navbar"> <!-- Top Navbar --> <!-- muestra usuario, logo, y menu colapsable izquierdo -->
               <div class="navbar-inner">
@@ -126,22 +121,11 @@
                     <i class="icon material-icons md-only">menu</i>
                   </a>
                 </div>
-                <div class="title sliding">Dashboard</div>
+                <div class="title sliding">Resumen</div>
                 <div class="right">
                   <div class="title sliding" id="navbar-home-currentCourse">Curso actual</div>
                 </div>
-                <div class="subnavbar">
-                  <form class="searchbar">
-                    <div class="searchbar-inner">
-                      <div class="searchbar-input-wrap">
-                        <input type="search" placeholder="Search">
-                        <i class="searchbar-icon"></i>
-                        <span class="input-clear-button"></span>
-                      </div>
-                      <span class="searchbar-disable-button">Cancel</span>
-                    </div>
-                  </form>
-                </div>
+                
               </div>
             </div>
             

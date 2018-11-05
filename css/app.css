@@ -1,16 +1,13 @@
 .row > * {
-    background: #fff;
-    text-align: center;
-    
-    
-    padding: 5px;
-    margin-bottom: 15px;
-    font-size: 12px;
-  }
+  text-align: center;  
+  padding: 5px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
 
 .dashboard{
   padding: 5%;
-  background-color: aqua;
+
 }
 
 .card-addnew{
@@ -23,4 +20,22 @@
 
 .minCard-obj {
   min-width: 300px;
+}
+
+.bg-img-perfil {
+  background-image: url("../images/Empty-Profile.jpg") !important;
+  background-size: cover;
+  background-position: center;
+}
+
+.db-text {
+  font-size: 2.5rem;
+  font-style: oblique;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.stepper-center {
+  margin: 0 auto;
+  margin-top: 5px;
 }
