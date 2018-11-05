@@ -94,7 +94,7 @@ function perTakeData () {
     return dataJSON;
 }
 
-function dibujarObjetivos(cantidad){
+function dibujarListadoObjetivos(cantidad){
     var el = $$('#mod-course-formObjetivos');
     var currentObjetivo = currentCourse.objetivos;
     for (var i=0; i<cantidad; i++){
@@ -133,7 +133,7 @@ function dibujarObjetivos(cantidad){
 
 //para UPDATEAR curso
 $$(document).on('page:init', '.page[data-name="mod-course"]', function () {
-    dibujarObjetivos(currentCourse.objetivos.cantidad);
+    dibujarListadoObjetivos(currentCourse.objetivos.cantidad);
 
     //    fbdb.ref().once('child_added',function(snap){
         var formData = {
@@ -306,10 +306,18 @@ panelLeft.once('open', function (panel) {
         var currentA = $$('<a>');
         currentA.addClass("button panel-close");
         currentA.text(nombreCurso);
-        currentA.attr('href', '/cursos/');
-        currentA.attr('onclick', `readCourse('${idCurso}')`);
+        //currentA.attr('href', '/');
+        currentA.attr('onclick', `haElegidoCurso('${idCurso}')`);
         itemsAcordeonPanelLeft.append(currentA);
     }
 });
 
 
+function haElegidoCurso (idCurso){
+    readCourse(idCurso);
+    // mainView.router.navigate('/',{
+    //     reloadCurrent: true,
+    //     animate: true,
+
+    // });
+}

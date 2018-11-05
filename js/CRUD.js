@@ -267,8 +267,12 @@ function readCourse (idCourse){ //lee el curso actual
             });
             
         };
-
-   });
+        mainView.router.navigate('/',{
+            reloadCurrent: true,
+            animate: true,
+            
+        });
+    });
 }
 
 function readObjetivoDelAlumno (objetivoAlumnoDelCursoActual) {

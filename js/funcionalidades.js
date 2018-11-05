@@ -153,23 +153,12 @@ var alumnoEspecifico;
 var numeroAlumnoEspecifico;
 
 
-$$(document).once('page:init', '.page[data-name="home"]', function (e) {
-  // var demoGauge = app.gauge.create({
-  //   el: '#dos',
-  //   type: 'circle',
-  //   value: 0.5,
-  //   size: 250,
-  //   borderColor: '#2196f3',
-  //   borderWidth: 10,
-  //   valueText: '50%',
-  //   valueFontSize: 41,
-  //   valueTextColor: '#2196f3',
-  //   labelText: 'amount of something',
-  // });
-  console.log("cargue home");
+$$(document).on('page:init', '.page[data-name="home"]', function (e) {
+  dibujarCartasDashboardDataCurso();
+  dibujarCartasDashboardObjetivos();
+  dibujarCartasDashboardListadoAlumnos();
 
-  // Change demo gauge on button click
-  // cardDrawing (content,page,"card-basic");
+  console.log("cargue home");
 });
 
 
@@ -193,9 +182,8 @@ $$(document).on('page:init', '.page[data-name="alumno"]', function (e) {
 });
 
 $$(document).on('page:init', '.page[data-name="alumno"]', function (e) {
-  console.log("init 1 =",alumnoEspecifico);
   dibujarCartasSeguimientoAlumnoEspecifico (numeroAlumnoEspecifico);
-  console.log("init 2 =",alumnoEspecifico);
+
 });
 
 
@@ -205,10 +193,13 @@ $$(document).on('page:afterin', '.page[data-name="alumno"]', function (e) {
     arrayDeGaougesAlumnos[i] = gaugeAlumnos;
     
     var stepperAlumnos = app.stepper.get(`#stepperAlumno${i}${alumnoEspecifico}`);
+    stepperAlumnos.valorPrevioGauge = gaugeAlumnos.el["data-value"];
     stepperAlumnos.id = idsObjetivoPusheadoCursoActual[i];
     stepperAlumnos.i = i;
     stepperAlumnos.on("change",function (stepper, value) {
-      puntaje = {"puntaje":value};
+      var dif = value - arrayDeGaougesAlumnos[stepper.i].el["data-value"]*100;
+     // console.log(dif, arrayDeGaougesAlumnos[stepper.i].el["data-value"]*100);
+      puntaje = {"puntaje":dif};
       updateCurrentAlumno("desempeno/objetivos/"+stepper.id, puntaje);
       stepper.setValue(value);
       arrayDeGaougesAlumnos[stepper.i].update({"value":value/100,valueText:value+"%"})
@@ -223,6 +214,215 @@ $$(document).on('page:init', '.page[data-name="cursos"]', function (e) {
   var page  = "cursos";
   dibujarGrilla (content,page,"card-basic");
 });
+
+function dibujarCartasDashboardListadoAlumnos () {
+  var alumnos = idsAlumnosDelCursoActual;
+  var divNum = 4;
+  var cantidadDeAlumnos = getObjLength(alumnos);
+  var rows = Math.ceil(cantidadDeAlumnos / divNum);
+  
+  var cardZone = $$('.cardZone'); 
+  
+  for (var i = 0,aux=0; rows>i; i++)// contenido->card->row->cardZone
+  {  
+    //creo fila
+    var currentRow = $$('<div>'); 
+    currentRow.addClass("row");
+
+    for (var j = 0; divNum>j; j++)
+    {
+      //creo columna
+      var currentCol = $$('<div>');  
+      currentCol.addClass("col-30.tablet-30.desktop-30"); 
+      //creo card
+      var currentCard;
+      if(cantidadDeAlumnos-j < 1)
+      {
+        currentCard = $$('<div>');
+        currentCard.addClass("card-null card-content card-content-padding");
+        currentCard.append("");
+      }
+      else 
+      {
+        currentCard = crearCardDashboardListadoAlumno(j); 
+      }
+      aux++;
+      //inserto card a columna      
+      currentCol.append(currentCard);
+      //inserto columna a row
+      currentRow.append(currentCol);
+    }
+    //inserto row a dashboard
+    cardZone.append(currentRow);
+  }
+}
+
+function crearCardDashboardListadoAlumno (j){
+  var paraMostrar = [];
+  var listadoAlumnos = [];
+  var alumnos = currentCourse.alumnos;
+  var keys = [];
+  for (var key in alumnos){
+    keys.push (key);
+  }
+  for (var k = 0, cont = 0; k < alumnos.cantidad ; k++){
+    
+    for (var i = 0; i<4 ; i++){
+      if (alumnos.cantidad-i < 1){
+
+      }
+      else {
+        var nombreApellido = {
+          nombre : alumnos[keys[cont]].nombre,
+          apellido : alumnos[keys[cont]].apellido,
+        };
+        paraMostrar[i] = nombreApellido;
+        cont++;
+      }
+    }     
+    listadoAlumnos.push(paraMostrar);
+  }
+
+  var modeloDeCarta = $$('<div>').addClass("card");
+  var cardContent = $$('<div>').addClass("card-content card-content-padding");
+  var lineaAlumno = $$('<p>');
+  lineaAlumno.html(
+    `${listadoAlumnos[j][0].nombre} ${listadoAlumnos[j][0].apellido}`);
+
+  for (var i = 0 ; i<4 ;i++){
+    if (alumnos.cantidad-i < 1){
+
+    } 
+    else {
+      cardContent.append(lineaAlumno);
+    }
+  }
+  modeloDeCarta.append(cardContent);
+  var card = modeloDeCarta;
+  return card;
+}
+
+
+function dibujarCartasDashboardObjetivos () {
+  //var alumnos = idsAlumnosDelCursoActual;
+  var divNum = 1;
+  var cantidadDeCartas = 1;
+  var rows = Math.ceil(cantidadDeCartas / divNum);
+  
+  var cardZone = $$('.cardZone'); 
+  
+  for (var i = 0,aux=0; rows>i; i++)// contenido->card->row->cardZone
+  {  
+    //creo fila
+    var currentRow = $$('<div>'); 
+    currentRow.addClass("row");
+
+    for (var j = 0; divNum>j; j++)
+    {
+      //creo columna
+      var currentCol = $$('<div>');  
+      currentCol.addClass("col-30.tablet-30.desktop-30"); 
+      //creo card
+      var currentCard;
+      if(cantidadDeCartas-j < 1)
+      {
+        currentCard = $$('<div>');
+        currentCard.addClass("card-null card-content card-content-padding");
+        currentCard.append("");
+      }
+      else 
+      {
+        currentCard = crearCardDashboardObjetivo(j); 
+      }
+      aux++;
+      //inserto card a columna      
+      currentCol.append(currentCard);
+      //inserto columna a row
+      currentRow.append(currentCol);
+    }
+    //inserto row a dashboard
+    cardZone.append(currentRow);
+  }
+}
+
+function crearCardDashboardObjetivo (j){
+  var porcentualObjetivos = 0;
+  for (var i = 0; i<getObjLength(estadisticasObjetivosCursoActual) ; i++ ) {
+    porcentualObjetivos += estadisticasObjetivosCursoActual[i];
+  }
+  var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
+  modeloDeCarta.html(
+    `<div class="card-content card-content-padding">\
+      <p>${porcentualObjetivos}%</p>\
+    </div>\
+    `);
+
+  var card = modeloDeCarta;
+  return card;
+}
+
+function dibujarCartasDashboardDataCurso () {
+  //var alumnos = idsAlumnosDelCursoActual;
+  var divNum = 3;
+  var cantidadDeCartas = 3;
+  var rows = Math.ceil(cantidadDeCartas / divNum);
+  
+  var cardZone = $$('.cardZone'); 
+  
+  for (var i = 0,aux=0; rows>i; i++)// contenido->card->row->cardZone
+  {  
+    //creo fila
+    var currentRow = $$('<div>'); 
+    currentRow.addClass("row");
+
+    for (var j = 0; divNum>j; j++)
+    {
+      //creo columna
+      var currentCol = $$('<div>');  
+      currentCol.addClass("col-30.tablet-30.desktop-30"); 
+      //creo card
+      var currentCard;
+      if(cantidadDeCartas-j < 1)
+      {
+        currentCard = $$('<div>');
+        currentCard.addClass("card-null card-content card-content-padding");
+        currentCard.append("");
+      }
+      else 
+      {
+        currentCard = crearCardDashboardDataCurso(j); 
+      }
+      aux++;
+      //inserto card a columna      
+      currentCol.append(currentCard);
+      //inserto columna a row
+      currentRow.append(currentCol);
+    }
+    //inserto row a dashboard
+    cardZone.append(currentRow);
+  }
+}
+
+
+function crearCardDashboardDataCurso (j){
+  var abono = currentCourse.data.abono;
+  var cupo = currentCourse.data.cupo;
+  var tematica = currentCourse.data.tematica;
+  var dataCurso = [];
+  dataCurso.push(tematica);
+  dataCurso.push(abono);
+  dataCurso.push(cupo);
+
+  var modeloDeCarta = $$('<div>').addClass("card demo-card-header-pic");
+  modeloDeCarta.html(
+    `<div class="card-content card-content-padding">\
+      <p>${dataCurso[j]}</p>\
+    </div>\
+    `);
+
+  var card = modeloDeCarta;
+  return card;
+}
 
 function abrirPopOVerLeerMas (idAlumnos,j) {
   var nombre =  dataAlumnosDelCursoActual[j].nombre;
