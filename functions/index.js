@@ -144,7 +144,7 @@ exports.obsAlumnosAgregadosACurso = functions.database.ref('cursos/{cursoId}/')
     //     cursoOnUpdate.data.cupo != before.data.cupo ||
     //     cursoOnUpdate.data.nombre != before.data.nombre ||
     //     cursoOnUpdate.data.tematica != before.data.tematica){
-        if (cantidadA!=cantidadB) {
+    if (cantidadA!=cantidadB) {
 
         console.log(cursoOnUpdate);
         var idsAlumosGeneradosPorPush = [];
@@ -248,7 +248,7 @@ exports.obsObjetivosDelCursoSegunAlumno = functions.database.ref('usuarios/{idUs
     var cantidadA = cursoOnUpdate.desempeno.objetivos.cantidad;
     var cantidadB = before.desempeno.objetivos.cantidad;
 
-    if (cantidadA!=cantidadB) {
+    if (cantidadA==cantidadB) {
     var idsObjetivosGeneradosPorPush = [];
     for (var key in cursoOnUpdate.desempeno.objetivos){
         if (key != "cantidad"){
